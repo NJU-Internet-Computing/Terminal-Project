@@ -22,4 +22,8 @@
 </script>
 
 <style>
+	.NumSelectorItem{
+		color: #FFFFFF;
+		width: 200rpx ;
+	}
 </style>
