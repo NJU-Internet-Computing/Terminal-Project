@@ -1,6 +1,6 @@
 <template>
 	<view>
-		
+		this is Board
 	</view>
 </template>
 
