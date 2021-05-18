@@ -9258,9 +9258,15 @@ var moduleSudokuComp = {
 
 
 
-  _sudokuCompConst.default.changeSelectedCell, function (state, payload) {
+  _sudokuCompConst.default.mutateSelectedCell, function (state, payload) {
     state.selectedCellRow = payload.row;
     state.selectedCellCol = payload.col;
+  }), _defineProperty(_mutations,
+
+  _sudokuCompConst.default.mutateSelectedCellCurrentNumber, function (state, payload) {
+    state.selectedCellCurrentNumber = payload.currentNumber;
+    console.log("state: ");
+    console.log(state.selectedCellCurrentNumber);
   }), _defineProperty(_mutations,
 
 
@@ -9351,7 +9357,7 @@ var moduleSudokuComp = {
 
   _sudokuCompConst.default.cellNumberToBeSelect, function (state, getters) {
     // return  getters.screenNumber(state.currentSudokuState) ;
-    return [0, 1];
+    return [0, 1, 2, 3, 4];
   }), _defineProperty(_getters,
 
   _sudokuCompConst.default.cellNumberToBeDisplay, function (state, getters) {
@@ -9382,9 +9388,9 @@ moduleSudokuComp;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //mutations
-var changeSelectedCell = 'changeSelectedCell';
+var mutateSelectedCell = 'mutateSelectedCell';
 var initSudokuState = 'initSudokuState';
-
+var mutateSelectedCellCurrentNumber = 'mutateSelectedCellCurrentNumber';
 //getters
 var cellNumberToBeSelect = 'cellNumberToBeSelect';
 var cellNumberToBeDisplay = 'cellNumberToBeDisplay';
@@ -9392,8 +9398,12 @@ var selectedCell = 'selectedCell';
 var selectedCellCurrentNumber = 'selectedCellCurrentNumber';var _default =
 
 {
+  //mutations
   initSudokuState: initSudokuState,
-  changeSelectedCell: changeSelectedCell,
+  mutateSelectedCell: mutateSelectedCell,
+  mutateSelectedCellCurrentNumber: mutateSelectedCellCurrentNumber,
+
+  //getters
   cellNumberToBeSelect: cellNumberToBeSelect,
   cellNumberToBeDisplay: cellNumberToBeDisplay,
   selectedCell: selectedCell,

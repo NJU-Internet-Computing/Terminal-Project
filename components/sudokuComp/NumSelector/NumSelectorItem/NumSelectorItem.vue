@@ -26,4 +26,5 @@
 		color: #FFFFFF;
 		width: 200rpx ;
 	}
+	
 </style>

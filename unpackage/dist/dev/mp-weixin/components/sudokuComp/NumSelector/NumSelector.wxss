@@ -25,6 +25,15 @@
 	/* color: #000000; */
 	/* color: #FFFFFF; */
 }
-
+/* 
+.selected{
+	background-color: #007AFF;
+} */
+.indicator{
+	margin: 0 auto ;
+	text-align: center;
+	font-weight: 700;
+	font-size: 50rpx;
+}
 
 

@@ -7,6 +7,7 @@
 			:list2BSelect="offset2BSelect" 
 			:currentItem="currNum"
 			id="NumSelector"
+			@selected="getSelectedNumber"
 		>
 		</NumSelector>
 		
@@ -69,7 +70,17 @@
 		methods:{			
 			...mapMutations([
 				'initSudokuState',
+				'mutateSelectedCellCurrentNumber',
 			]),//end of mapMutations
+			
+			getSelectedNumber(selectedNumber){
+				let num = 0;
+				if((selectedNumber >= "1") && (selectedNumber <= "9")) 
+					num = Number(selectedNumber) ;
+				this.mutateSelectedCellCurrentNumber({
+					currentNumber: num,
+				})
+			},
 			
 			getSelectedCellInfo(){				
 				this.setOffset2BSelect(this.cellNumberToBeSelect) ;

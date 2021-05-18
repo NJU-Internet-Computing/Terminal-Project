@@ -9,16 +9,18 @@
 			@touchend="touchEnd" 
 			:animation="animate"
 			>			
-				<NumSelectorItem v-for="(item, index) in offset2BSelect" :key="index">
+				<NumSelectorItem v-for="(item, index) in offset2BSelect" 
+				:key="index" >
 					<template v-slot:item>
-						<view>{{item}}</view>
+						<view :class="{'selected': (index === currentIndex)}">{{item}}</view>
 						<!-- <view>{{item}}</view> -->
 					</template>
 				</NumSelectorItem>				
 			</view>
-			<!-- end of selector -->
-			
+			<!-- end of selector -->			
 			</view>
+			
+			<view class="indicator">↑</view>
 	</view>	
 </template>
 
@@ -130,6 +132,8 @@
 				// }
 				this.setTransform(this.animDest) ;
 				this.checkPosition() ;
+				
+				this.$emit('selected', this.offset2BSelect[this.currentIndex]) ;
 			},//end of touchEnd
 			
 			checkPosition(){				
@@ -203,7 +207,18 @@
 		
 		/* color: #000000; */
 		/* color: #FFFFFF; */
-	}
+	}	
 	
+	/* 
+	.selected{
+		background-color: #007AFF;
+	} */
+	
+	.indicator{
+		margin: 0 auto ;
+		text-align: center;
+		font-weight: 700;
+		font-size: 50rpx;
+	}
 
 </style>

@@ -21,10 +21,16 @@ const moduleSudokuComp = {
 		 * @param {Object} state of sudokuComp
 		 * @param {Object} payload {row: Number, col: Number} 
 		 */
-		[servise.changeSelectedCell](state, payload){
+		[servise.mutateSelectedCell](state, payload){
 			state.selectedCellRow = payload.row ;
 			state.selectedCellCol = payload.col ;
-		},//end of servise.changeSelectedCell
+		},//end of servise.mutateSelectedCell
+		
+		[servise.mutateSelectedCellCurrentNumber](state, payload){
+			state.selectedCellCurrentNumber = payload.currentNumber ;
+			console.log("state: ") ;
+			console.log(state.selectedCellCurrentNumber) ;
+		},//end of servise.mutateSelectedCellCurrentNumber
 		
 		/**
 		 * @param {Object} payload {gameMode: String, sudokuState: Array}  
@@ -47,16 +53,16 @@ const moduleSudokuComp = {
 			] ;
 			
 			state.currentSudokuState = [
-			[0,2,3,4,5,6,7,8,9],
-			[2,3,4,5,6,7,8,9,1],
-			[3,4,5,6,7,8,9,1,2],
-			[4,5,6,7,8,9,1,2,3],
-			[5,6,7,8,9,1,2,3,4],
-			[6,7,8,9,1,2,3,4,5],
-			[7,8,9,1,2,3,4,5,6],
-			[8,9,1,2,3,4,5,6,7],
-			[9,1,2,3,4,5,6,7,8],
-		] ;
+				[0,2,3,4,5,6,7,8,9],
+				[2,3,4,5,6,7,8,9,1],
+				[3,4,5,6,7,8,9,1,2],
+				[4,5,6,7,8,9,1,2,3],
+				[5,6,7,8,9,1,2,3,4],
+				[6,7,8,9,1,2,3,4,5],
+				[7,8,9,1,2,3,4,5,6],
+				[8,9,1,2,3,4,5,6,7],
+				[9,1,2,3,4,5,6,7,8],
+			] ;
 			
 			state.gameMode = payload.gameMode ;			
 			
@@ -114,7 +120,7 @@ const moduleSudokuComp = {
 		
 		[servise.cellNumberToBeSelect]: (state, getters) =>{			
 			// return  getters.screenNumber(state.currentSudokuState) ;
-			return [0, 1] ;
+			return [0, 1, 2, 3, 4] ;
 		},// end of cellNumberToBeSelect(state)
 		
 		[servise.cellNumberToBeDisplay]: (state, getters) => {
