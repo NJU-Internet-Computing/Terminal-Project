@@ -1,0 +1,6 @@
+
+.NumSelectorItem{
+	color: #FFFFFF;
+	width: 200rpx ;
+}
+

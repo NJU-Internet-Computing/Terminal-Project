@@ -1,0 +1,24 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"sudokuState": {
+			"description": "数独游戏的开局状态",
+			"bsonType": "array"			
+		},
+		"difficulty": {
+			"description": "数独游戏的难度",
+			"bsonType": "int"
+		}
+	}
+}

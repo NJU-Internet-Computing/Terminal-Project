@@ -7,6 +7,11 @@
 		<view class="text-area">
 			<text class="title">{{title}}</text>
 		</view>
+		<navigator url="../../components/sudokuComp/SudokuComp">
+			<button open-type="default">
+				调试用
+			</button>			
+		</navigator>
 	</view>
 </template>
 

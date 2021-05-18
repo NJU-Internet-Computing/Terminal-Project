@@ -1,0 +1,30 @@
+
+.hy-selector{
+	overflow: hidden;
+	position: relative ;
+	width: 600rpx;
+	height: 80rpx ;
+	line-height: 80rpx;
+	margin: 0 auto ;		
+	background-color: red;
+}
+.selector{	
+	display: -webkit-box;	
+	display: -webkit-flex;	
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	        flex-direction: row;
+	/* justify-content: space-around ; */
+	justify-items:baseline ; 
+	
+	font-size: 60rpx;
+	text-align: center; 
+	
+	/* color: #000000; */
+	/* color: #FFFFFF; */
+}
+
+
+

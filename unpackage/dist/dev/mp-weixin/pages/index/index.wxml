@@ -1,1 +1,1 @@
-<view class="content"><view>hello terminal project</view><image class="logo" src="/static/logo.png"></image><view class="text-area"><text class="title">{{title}}</text></view></view>
+<view class="content"><view>hello terminal project</view><image class="logo" src="/static/logo.png"></image><view class="text-area"><text class="title">{{title}}</text></view><navigator url="../../components/sudokuComp/SudokuComp"><button open-type="default">调试用</button></navigator></view>

@@ -120,7 +120,9 @@
 				console.log(this.offset2BSelect) ;
 				
 				this.slideCount = this.offset2BSelect.length ;
-				
+				if(this.slideCount === 3){
+					
+				}
 				if(this.slideCount > 3){
 					let cloneFirst = this.offset2BSelect[0] ;
 					let cloneSecond = this.offset2BSelect[1] ;

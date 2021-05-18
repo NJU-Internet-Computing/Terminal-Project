@@ -822,7 +822,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7395,7 +7395,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7416,14 +7416,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7509,7 +7509,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8099,24 +8099,17 @@ function normalizeComponent (
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
+var _sudokuComp = _interopRequireDefault(__webpack_require__(/*! ./sudokuComp/sudokuComp.js */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 _vue.default.use(_vuex.default); //vue的插件机制
 
 //Vuex.Store 构造器选项
 var store = new _vuex.default.Store({
-  state: { //存放状态
-    sudokuState: [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [2, 3, 4, 5, 6, 7, 8, 9, 1],
-    [3, 4, 5, 6, 7, 8, 9, 1, 2],
-    [4, 5, 6, 7, 8, 9, 1, 2, 3],
-    [5, 6, 7, 8, 9, 1, 2, 3, 4],
-    [6, 7, 8, 9, 1, 2, 3, 4, 5],
-    [7, 8, 9, 1, 2, 3, 4, 5, 6],
-    [8, 9, 1, 2, 3, 4, 5, 6, 7],
-    [9, 1, 2, 3, 4, 5, 6, 7, 8]] } });var _default =
+  state: {
+    msg: "hello world" },
 
+  modules: {
+    sudokuComp: _sudokuComp.default } });var _default =
 
 
 store;exports.default = _default;
@@ -9232,6 +9225,139 @@ var index = {
 
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ 3)))
+
+/***/ }),
+/* 13 */
+/*!*****************************************************************************!*\
+  !*** C:/Users/Dell/Desktop/Terminal-Project/store/sudokuComp/sudokuComp.js ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _sudokuCompConst = __webpack_require__(/*! ./sudokuCompConst.js */ 14);var _getters;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+
+
+// console.log(cellNumberToBeDisplay) ;
+var moduleSudokuComp = {
+  state: function state() {return {
+      //won't change just for 
+      initSudokuState: [
+      [0, 2, 3, 4, 5, 6, 7, 8, 9],
+      [2, 3, 4, 5, 6, 7, 8, 9, 1],
+      [3, 4, 5, 6, 7, 8, 9, 1, 2],
+      [4, 5, 6, 7, 8, 9, 1, 2, 3],
+      [5, 6, 7, 8, 9, 1, 2, 3, 4],
+      [6, 7, 8, 9, 1, 2, 3, 4, 5],
+      [7, 8, 9, 1, 2, 3, 4, 5, 6],
+      [8, 9, 1, 2, 3, 4, 5, 6, 7],
+      [9, 1, 2, 3, 4, 5, 6, 7, 8]],
+      // end of sudokuState
+
+      //the player change this state
+      currentSudokuState: [
+      [0, 2, 3, 4, 5, 6, 7, 8, 9],
+      [2, 3, 4, 5, 6, 7, 8, 9, 1],
+      [3, 4, 5, 6, 7, 8, 9, 1, 2],
+      [4, 5, 6, 7, 8, 9, 1, 2, 3],
+      [5, 6, 7, 8, 9, 1, 2, 3, 4],
+      [6, 7, 8, 9, 1, 2, 3, 4, 5],
+      [7, 8, 9, 1, 2, 3, 4, 5, 6],
+      [8, 9, 1, 2, 3, 4, 5, 6, 7],
+      [9, 1, 2, 3, 4, 5, 6, 7, 8]],
+      //end of currentSudokuState
+
+      selectedCellRow: 0,
+      selectedCellCol: 0 };},
+  // end of state,
+
+  mutations: _defineProperty({},
+
+
+
+
+  _sudokuCompConst.changeSelectedCell, function (state, payload) {
+    console.log(payload);
+    state.selectedCellRow = payload.row;
+    state.selectedCellCol = payload.col;
+  }),
+  // end of mutations
+
+  actions: {},
+
+  //end of actions
+
+  getters: (_getters = {
+
+    /**
+                          * @return {func} (sudokuState)=>{}
+                          * which:
+                          * @description 
+                          * @return {List[Boolean]} with 9 element. true for display and false for hide
+                          */
+    screenNumber: function screenNumber(state) {return function (sudokuState) {
+        var row = state.selectedCellRow;
+        var col = state.selectedCellCol;
+
+        var resultFlag = [];
+        for (var i = 0; i < 10; i++) {resultFlag.push(true);}
+
+        for (var j = 0; j < 9; j++) {
+          var num = sudokuState[row][j];
+          if (num !== 0) resultFlag[num] = false;
+        }
+
+        for (var i = 0; i < 9; i++) {
+          var _num = sudokuState[i][col];
+          if (_num !== 0) resultFlag[_num] = false;
+        }
+
+        row = Math.floor(row / 3);
+        col = Math.floor(col / 3);
+        for (var i = row; i < row + 3; i++) {
+          for (var j = col; j < col + 3; j++) {
+            var _num2 = sudokuState[i][j];
+            if (_num2 !== 0) resultFlag[_num2] = false;
+          }
+        }
+
+        var result = [];
+        for (var i = 0; i < 10; i++) {
+          if (resultFlag[i]) result.push(i);
+        }
+
+        return result;
+      };} }, _defineProperty(_getters,
+
+  _sudokuCompConst.cellNumberToBeSelect, function (state, getters) {
+    // return  getters.screenNumber(state.currentSudokuState) ;
+    return [0, 1, 2, 3, 4, 5];
+  }), _defineProperty(_getters,
+
+  _sudokuCompConst.cellNumberToBeDisplay, function (state, getters) {
+    return getters.screenNumber(state.initSudokuState);
+  }), _getters)
+
+  //end of getters
+};var _default =
+moduleSudokuComp;exports.default = _default;
+
+/***/ }),
+/* 14 */
+/*!**********************************************************************************!*\
+  !*** C:/Users/Dell/Desktop/Terminal-Project/store/sudokuComp/sudokuCompConst.js ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.cellNumberToBeDisplay = exports.cellNumberToBeSelect = exports.changeSelectedCell = void 0; //mutations
+var changeSelectedCell = 'changeSelectedCell';
+
+//getters
+exports.changeSelectedCell = changeSelectedCell;var cellNumberToBeSelect = 'cellNumberToBeSelect';exports.cellNumberToBeSelect = cellNumberToBeSelect;
+var cellNumberToBeDisplay = 'cellNumberToBeDisplay';exports.cellNumberToBeDisplay = cellNumberToBeDisplay;
 
 /***/ })
 ]]);

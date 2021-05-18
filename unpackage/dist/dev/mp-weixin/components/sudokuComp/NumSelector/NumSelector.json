@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "num-selector-item": "/components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem"
+  }
+}

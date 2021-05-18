@@ -1,0 +1,1 @@
+<view><board vue-id="dca0a53c-1" bind:__l="__l"></board><num-selector vue-id="dca0a53c-2" bind:__l="__l"></num-selector></view>

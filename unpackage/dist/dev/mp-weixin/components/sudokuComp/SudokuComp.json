@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "board": "/components/sudokuComp/Board/Board",
+    "num-selector": "/components/sudokuComp/NumSelector/NumSelector"
+  }
+}
