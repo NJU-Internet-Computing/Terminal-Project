@@ -9235,51 +9235,72 @@ var index = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _sudokuCompConst = _interopRequireDefault(__webpack_require__(/*! ./sudokuCompConst.js */ 14));var _getters;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _sudokuCompConst = _interopRequireDefault(__webpack_require__(/*! ./sudokuCompConst.js */ 14));var _mutations, _getters;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 // console.log(cellNumberToBeDisplay) ;
 var moduleSudokuComp = {
   state: function state() {return {
+
+      gameMode: "", //NORMAL or PUZZLE
+
       //won't change just for 
-      initSudokuState: [
-      [0, 2, 3, 4, 5, 6, 7, 8, 9],
-      [2, 3, 4, 5, 6, 7, 8, 9, 1],
-      [3, 4, 5, 6, 7, 8, 9, 1, 2],
-      [4, 5, 6, 7, 8, 9, 1, 2, 3],
-      [5, 6, 7, 8, 9, 1, 2, 3, 4],
-      [6, 7, 8, 9, 1, 2, 3, 4, 5],
-      [7, 8, 9, 1, 2, 3, 4, 5, 6],
-      [8, 9, 1, 2, 3, 4, 5, 6, 7],
-      [9, 1, 2, 3, 4, 5, 6, 7, 8]],
-      // end of sudokuState
+      origSudokuState: [], // end of sudokuState
 
       //the player change this state
-      currentSudokuState: [
-      [0, 2, 3, 4, 5, 6, 7, 8, 9],
-      [2, 3, 4, 5, 6, 7, 8, 9, 1],
-      [3, 4, 5, 6, 7, 8, 9, 1, 2],
-      [4, 5, 6, 7, 8, 9, 1, 2, 3],
-      [5, 6, 7, 8, 9, 1, 2, 3, 4],
-      [6, 7, 8, 9, 1, 2, 3, 4, 5],
-      [7, 8, 9, 1, 2, 3, 4, 5, 6],
-      [8, 9, 1, 2, 3, 4, 5, 6, 7],
-      [9, 1, 2, 3, 4, 5, 6, 7, 8]],
-      //end of currentSudokuState
+      currentSudokuState: [], //end of currentSudokuState
 
       selectedCellRow: 0,
       selectedCellCol: 0,
       selectedCellCurrentNumber: 0 };},
   // end of state,
 
-  mutations: _defineProperty({},
+  mutations: (_mutations = {}, _defineProperty(_mutations,
 
 
 
 
   _sudokuCompConst.default.changeSelectedCell, function (state, payload) {
-    console.log(payload);
     state.selectedCellRow = payload.row;
     state.selectedCellCol = payload.col;
-  }),
+  }), _defineProperty(_mutations,
+
+
+
+
+  _sudokuCompConst.default.initSudokuState, function (state, payload) {
+    var sudokuState = payload.sudokuState;
+    state.origSudokuState = JSON.parse(JSON.stringify(sudokuState));
+    state.currentSudokuState = JSON.parse(JSON.stringify(sudokuState));
+
+    state.origSudokuState = [
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [2, 3, 4, 5, 6, 7, 8, 9, 1],
+    [3, 4, 5, 6, 7, 8, 9, 1, 2],
+    [4, 5, 6, 7, 8, 9, 1, 2, 3],
+    [5, 6, 7, 8, 9, 1, 2, 3, 4],
+    [6, 7, 8, 9, 1, 2, 3, 4, 5],
+    [7, 8, 9, 1, 2, 3, 4, 5, 6],
+    [8, 9, 1, 2, 3, 4, 5, 6, 7],
+    [9, 1, 2, 3, 4, 5, 6, 7, 8]];
+
+
+    state.currentSudokuState = [
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [2, 3, 4, 5, 6, 7, 8, 9, 1],
+    [3, 4, 5, 6, 7, 8, 9, 1, 2],
+    [4, 5, 6, 7, 8, 9, 1, 2, 3],
+    [5, 6, 7, 8, 9, 1, 2, 3, 4],
+    [6, 7, 8, 9, 1, 2, 3, 4, 5],
+    [7, 8, 9, 1, 2, 3, 4, 5, 6],
+    [8, 9, 1, 2, 3, 4, 5, 6, 7],
+    [9, 1, 2, 3, 4, 5, 6, 7, 8]];
+
+
+    state.gameMode = payload.gameMode;
+
+    console.log(state.gameMode);
+    console.log(state.origSudokuState);
+    console.log(state.currentSudokuState);
+  }), _mutations),
   // end of mutations
 
   actions: {},
@@ -9330,11 +9351,11 @@ var moduleSudokuComp = {
 
   _sudokuCompConst.default.cellNumberToBeSelect, function (state, getters) {
     // return  getters.screenNumber(state.currentSudokuState) ;
-    return [0, 1, 2, 3, 4];
+    return [0, 1];
   }), _defineProperty(_getters,
 
   _sudokuCompConst.default.cellNumberToBeDisplay, function (state, getters) {
-    return getters.screenNumber(state.initSudokuState);
+    return getters.screenNumber(state.origSudokuState);
   }), _defineProperty(_getters,
 
   _sudokuCompConst.default.selectedCell, function (state) {
@@ -9362,6 +9383,7 @@ moduleSudokuComp;exports.default = _default;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //mutations
 var changeSelectedCell = 'changeSelectedCell';
+var initSudokuState = 'initSudokuState';
 
 //getters
 var cellNumberToBeSelect = 'cellNumberToBeSelect';
@@ -9370,6 +9392,7 @@ var selectedCell = 'selectedCell';
 var selectedCellCurrentNumber = 'selectedCellCurrentNumber';var _default =
 
 {
+  initSudokuState: initSudokuState,
   changeSelectedCell: changeSelectedCell,
   cellNumberToBeSelect: cellNumberToBeSelect,
   cellNumberToBeDisplay: cellNumberToBeDisplay,

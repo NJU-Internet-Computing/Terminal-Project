@@ -151,6 +151,20 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
 
 
 {
+  props: {
+    /*使用字符串常量模拟枚举类型，表示两种游戏模式NORMAL与PUZZLE。*/
+    gameMode: {
+      type: String,
+      default: "NORMAL" },
+
+
+    /*接受一个9*9的二位数组，数组中每个元素在0~9之间，数组中的每个元素映射到数独游戏中的一个格子。若gameMode是NORMAL，则使用0代表需要玩家填写。若gameMode是PUZZLE，则有且仅有一个Block（即一个3*3的宫格）全为0*/
+    sudokuState: {
+      type: Array,
+      required: true } },
+
+  //end of props
+
   data: function data() {
     return {
       offset2BSelect: Array,
@@ -174,13 +188,20 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
   }, //end of watch
 
   beforeMount: function beforeMount() {
+    this.initSudokuState({
+      gameMode: this.gameMode,
+      sudokuState: this.sudokuState });
+
     this.getSelectedCellInfo();
   }, //end of beforeMount()		
 
   mounted: function mounted() {
   }, //end of mounted()
 
-  methods: {
+  methods: _objectSpread(_objectSpread({},
+  (0, _vuex.mapMutations)([
+  'initSudokuState'])), {}, {
+    //end of mapMutations
 
     getSelectedCellInfo: function getSelectedCellInfo() {
       this.setOffset2BSelect(this.cellNumberToBeSelect);
@@ -202,7 +223,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
         this.offset2BSelect.push(this.setNumByRule(newVal[i]));
       }
     } // end of setOffset2BSelect(newVal)
-  },
+  }),
   //end of methods	
 
 

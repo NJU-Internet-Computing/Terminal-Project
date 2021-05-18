@@ -2,31 +2,14 @@ import servise	from './sudokuCompConst.js' ;
 // console.log(cellNumberToBeDisplay) ;
 const moduleSudokuComp = {
 	state:()=>({
+		
+		gameMode: "",//NORMAL or PUZZLE
+		
 		//won't change just for 
-		initSudokuState: [
-			[0,2,3,4,5,6,7,8,9],
-			[2,3,4,5,6,7,8,9,1],
-			[3,4,5,6,7,8,9,1,2],
-			[4,5,6,7,8,9,1,2,3],
-			[5,6,7,8,9,1,2,3,4],
-			[6,7,8,9,1,2,3,4,5],
-			[7,8,9,1,2,3,4,5,6],
-			[8,9,1,2,3,4,5,6,7],
-			[9,1,2,3,4,5,6,7,8],
-		],// end of sudokuState
+		origSudokuState: [],// end of sudokuState
 		
 		//the player change this state
-		currentSudokuState: [
-			[0,2,3,4,5,6,7,8,9],
-			[2,3,4,5,6,7,8,9,1],
-			[3,4,5,6,7,8,9,1,2],
-			[4,5,6,7,8,9,1,2,3],
-			[5,6,7,8,9,1,2,3,4],
-			[6,7,8,9,1,2,3,4,5],
-			[7,8,9,1,2,3,4,5,6],
-			[8,9,1,2,3,4,5,6,7],
-			[9,1,2,3,4,5,6,7,8],
-		],//end of currentSudokuState
+		currentSudokuState: [],//end of currentSudokuState
 		
 		selectedCellRow: 0, 
 		selectedCellCol: 0,
@@ -38,11 +21,49 @@ const moduleSudokuComp = {
 		 * @param {Object} state of sudokuComp
 		 * @param {Object} payload {row: Number, col: Number} 
 		 */
-		[servise.changeSelectedCell](state, payload){			
-			console.log(payload) ;
+		[servise.changeSelectedCell](state, payload){
 			state.selectedCellRow = payload.row ;
 			state.selectedCellCol = payload.col ;
-		}
+		},//end of servise.changeSelectedCell
+		
+		/**
+		 * @param {Object} payload {gameMode: String, sudokuState: Array}  
+		 */
+		[servise.initSudokuState](state, payload){			
+			let sudokuState = payload.sudokuState ;
+			state.origSudokuState = JSON.parse(JSON.stringify(sudokuState)) ;
+			state.currentSudokuState = JSON.parse(JSON.stringify(sudokuState)) ;
+			
+			state.origSudokuState = [
+				[0,2,3,4,5,6,7,8,9],
+				[2,3,4,5,6,7,8,9,1],
+				[3,4,5,6,7,8,9,1,2],
+				[4,5,6,7,8,9,1,2,3],
+				[5,6,7,8,9,1,2,3,4],
+				[6,7,8,9,1,2,3,4,5],
+				[7,8,9,1,2,3,4,5,6],
+				[8,9,1,2,3,4,5,6,7],
+				[9,1,2,3,4,5,6,7,8],
+			] ;
+			
+			state.currentSudokuState = [
+			[0,2,3,4,5,6,7,8,9],
+			[2,3,4,5,6,7,8,9,1],
+			[3,4,5,6,7,8,9,1,2],
+			[4,5,6,7,8,9,1,2,3],
+			[5,6,7,8,9,1,2,3,4],
+			[6,7,8,9,1,2,3,4,5],
+			[7,8,9,1,2,3,4,5,6],
+			[8,9,1,2,3,4,5,6,7],
+			[9,1,2,3,4,5,6,7,8],
+		] ;
+			
+			state.gameMode = payload.gameMode ;			
+			
+			console.log(state.gameMode) ;
+			console.log(state.origSudokuState) ;
+			console.log(state.currentSudokuState) ;
+		},//end of 
 	},// end of mutations
 	
 	actions: {
@@ -93,11 +114,11 @@ const moduleSudokuComp = {
 		
 		[servise.cellNumberToBeSelect]: (state, getters) =>{			
 			// return  getters.screenNumber(state.currentSudokuState) ;
-			return [0, 1, 2, 3, 4] ;
+			return [0, 1] ;
 		},// end of cellNumberToBeSelect(state)
 		
 		[servise.cellNumberToBeDisplay]: (state, getters) => {
-			return getters.screenNumber(state.initSudokuState) ;
+			return getters.screenNumber(state.origSudokuState) ;
 		},// end of cellNumberToBeDisplay(state)
 		
 		[servise.selectedCell]: state =>{

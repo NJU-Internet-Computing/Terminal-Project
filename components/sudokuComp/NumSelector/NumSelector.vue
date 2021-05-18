@@ -147,12 +147,14 @@
 				this.offset2BSelect = newVal.slice(0) ;
 				let len = newVal.length ;
 				
-				if(len < 3) {
-					alert("list2BSelect should have more than 2 element") ;
-					console.log("list2BSelect should have more than 2 element")
-					return ;
+				if(len === 2) {
+					let array = newVal.slice(0) ;
+					this.offset2BSelect.push(...array) ;
+					this.offset2BSelect.unshift(...array) ;					
+					this.offset2BSelect.push(...array) ;
+					this.offset2BSelect.unshift(...array) ;
 				}
-				if(len === 3){
+				else if(len === 3){
 					let array = newVal.slice(0) ;
 					let cloneFirst = newVal[0] ;
 					let cloneLast = newVal[len-1] ;

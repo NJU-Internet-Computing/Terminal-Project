@@ -263,27 +263,29 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _toConsumableArray(arr)
       this.offset2BSelect = newVal.slice(0);
       var len = newVal.length;
 
-      if (len < 3) {
-        alert("list2BSelect should have more than 2 element");
-        console.log("list2BSelect should have more than 2 element");
-        return;
-      }
-      if (len === 3) {var _this$offset2BSelect, _this$offset2BSelect2;
+      if (len === 2) {var _this$offset2BSelect, _this$offset2BSelect2, _this$offset2BSelect3, _this$offset2BSelect4;
         var array = newVal.slice(0);
+        (_this$offset2BSelect = this.offset2BSelect).push.apply(_this$offset2BSelect, _toConsumableArray(array));
+        (_this$offset2BSelect2 = this.offset2BSelect).unshift.apply(_this$offset2BSelect2, _toConsumableArray(array));
+        (_this$offset2BSelect3 = this.offset2BSelect).push.apply(_this$offset2BSelect3, _toConsumableArray(array));
+        (_this$offset2BSelect4 = this.offset2BSelect).unshift.apply(_this$offset2BSelect4, _toConsumableArray(array));
+      } else
+      if (len === 3) {var _this$offset2BSelect5, _this$offset2BSelect6;
+        var _array = newVal.slice(0);
         var cloneFirst = newVal[0];
         var cloneLast = newVal[len - 1];
 
-        (_this$offset2BSelect = this.offset2BSelect).push.apply(_this$offset2BSelect, _toConsumableArray(array));
-        (_this$offset2BSelect2 = this.offset2BSelect).unshift.apply(_this$offset2BSelect2, _toConsumableArray(array));
+        (_this$offset2BSelect5 = this.offset2BSelect).push.apply(_this$offset2BSelect5, _toConsumableArray(_array));
+        (_this$offset2BSelect6 = this.offset2BSelect).unshift.apply(_this$offset2BSelect6, _toConsumableArray(_array));
 
         this.offset2BSelect.push(cloneFirst);
         this.offset2BSelect.unshift(cloneLast);
-      } else {var _this$offset2BSelect3, _this$offset2BSelect4;
+      } else {var _this$offset2BSelect7, _this$offset2BSelect8;
         var cloneFirst4 = newVal.slice(0, 4);
         var cloneLast4 = newVal.slice(len - 4);
 
-        (_this$offset2BSelect3 = this.offset2BSelect).push.apply(_this$offset2BSelect3, _toConsumableArray(cloneFirst4));
-        (_this$offset2BSelect4 = this.offset2BSelect).unshift.apply(_this$offset2BSelect4, _toConsumableArray(cloneLast4));
+        (_this$offset2BSelect7 = this.offset2BSelect).push.apply(_this$offset2BSelect7, _toConsumableArray(cloneFirst4));
+        (_this$offset2BSelect8 = this.offset2BSelect).unshift.apply(_this$offset2BSelect8, _toConsumableArray(cloneLast4));
       }
     } // end of setOffset2BSelect(newVal)					
   },
