@@ -822,7 +822,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7395,7 +7395,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7416,14 +7416,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7509,7 +7509,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9235,10 +9235,7 @@ var index = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _sudokuCompConst = __webpack_require__(/*! ./sudokuCompConst.js */ 14);var _getters;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _sudokuCompConst = _interopRequireDefault(__webpack_require__(/*! ./sudokuCompConst.js */ 14));var _getters;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 // console.log(cellNumberToBeDisplay) ;
 var moduleSudokuComp = {
   state: function state() {return {
@@ -9269,7 +9266,8 @@ var moduleSudokuComp = {
       //end of currentSudokuState
 
       selectedCellRow: 0,
-      selectedCellCol: 0 };},
+      selectedCellCol: 0,
+      selectedCellCurrentNumber: 0 };},
   // end of state,
 
   mutations: _defineProperty({},
@@ -9277,7 +9275,7 @@ var moduleSudokuComp = {
 
 
 
-  _sudokuCompConst.changeSelectedCell, function (state, payload) {
+  _sudokuCompConst.default.changeSelectedCell, function (state, payload) {
     console.log(payload);
     state.selectedCellRow = payload.row;
     state.selectedCellCol = payload.col;
@@ -9330,15 +9328,25 @@ var moduleSudokuComp = {
         return result;
       };} }, _defineProperty(_getters,
 
-  _sudokuCompConst.cellNumberToBeSelect, function (state, getters) {
+  _sudokuCompConst.default.cellNumberToBeSelect, function (state, getters) {
     // return  getters.screenNumber(state.currentSudokuState) ;
-    return [0, 1, 2, 3, 4, 5];
+    return [0, 1, 2, 3, 4];
   }), _defineProperty(_getters,
 
-  _sudokuCompConst.cellNumberToBeDisplay, function (state, getters) {
+  _sudokuCompConst.default.cellNumberToBeDisplay, function (state, getters) {
     return getters.screenNumber(state.initSudokuState);
-  }), _getters)
+  }), _defineProperty(_getters,
 
+  _sudokuCompConst.default.selectedCell, function (state) {
+    return {
+      selectedCellRow: state.selectedCellRow,
+      selectedCellCol: state.selectedCellCol };
+
+  }), _defineProperty(_getters,
+
+  _sudokuCompConst.default.selectedCellCurrentNumber, function (state) {
+    return state.selectedCellCurrentNumber;
+  }), _getters)
   //end of getters
 };var _default =
 moduleSudokuComp;exports.default = _default;
@@ -9352,12 +9360,21 @@ moduleSudokuComp;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.cellNumberToBeDisplay = exports.cellNumberToBeSelect = exports.changeSelectedCell = void 0; //mutations
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //mutations
 var changeSelectedCell = 'changeSelectedCell';
 
 //getters
-exports.changeSelectedCell = changeSelectedCell;var cellNumberToBeSelect = 'cellNumberToBeSelect';exports.cellNumberToBeSelect = cellNumberToBeSelect;
-var cellNumberToBeDisplay = 'cellNumberToBeDisplay';exports.cellNumberToBeDisplay = cellNumberToBeDisplay;
+var cellNumberToBeSelect = 'cellNumberToBeSelect';
+var cellNumberToBeDisplay = 'cellNumberToBeDisplay';
+var selectedCell = 'selectedCell';
+var selectedCellCurrentNumber = 'selectedCellCurrentNumber';var _default =
+
+{
+  changeSelectedCell: changeSelectedCell,
+  cellNumberToBeSelect: cellNumberToBeSelect,
+  cellNumberToBeDisplay: cellNumberToBeDisplay,
+  selectedCell: selectedCell,
+  selectedCellCurrentNumber: selectedCellCurrentNumber };exports.default = _default;
 
 /***/ })
 ]]);

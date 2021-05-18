@@ -173,3 +173,22 @@ prop:{
 }
 ```
 
+
+
+
+
+## 流程
+
+### NORMAL
+
+vuex：selectedCellRow，selectedCellCol，selectedCellCurrentNumber
+
+每个Cell 持有自己的在整个Board中的位置（row, col），selected：Boolean，currentNumber：Number
+
+1. 用户Click一个Cell，该Cell广播自己的$(row, col)与currentNumber$，自己设为selected=true，其余cell设selected=false
+2. sudokuComp监听有新的Cell被选择，监听获取新的cellNumberToBeSelect保存到本地，将本地的cNTBS按固定规则修改，监听获取currentNumber，将这两个参数传入numSelector显示，并监听选择效果
+3. 获取选择结果，广播该结果，提交更改currentSudokuState，
+4. selected Cell 监听该结果，并修改自己的currenNumber，
+5. 对属于一个Unit中的Cell，重新计算自己的候选数字
+
+### PUZZLE

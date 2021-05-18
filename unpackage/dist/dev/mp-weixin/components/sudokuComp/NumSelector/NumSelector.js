@@ -139,174 +139,160 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-
-
-
-
-
-var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var NumSelectorItem = function NumSelectorItem() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem */ "components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem").then((function () {return resolve(__webpack_require__(/*! ./NumSelectorItem/NumSelectorItem.vue */ 53));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _vuex = __webpack_require__(/*! vuex */ 12);function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var NumSelectorItem = function NumSelectorItem() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem */ "components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem").then((function () {return resolve(__webpack_require__(/*! ./NumSelectorItem/NumSelectorItem.vue */ 53));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
+  props: {
+    list2BSelect: {
+      type: Array,
+      required: true },
+
+    currentItem: {
+      type: [Number, String] } },
+
+  //end of props
+
   data: function data() {
     return {
-      slideCount: 0,
-      offsetWidth: 0,
-      swiperStyle: Object,
       offset2BSelect: Array,
+      slideCount: 0,
+      offsetWidth: 100,
+
       Animation: Object,
       animate: Object,
+
+      zeroIndex: 4,
       currentIndex: 0,
-      moveRatio: 0.25,
+      moveRatio: 0.33,
+
       startX: Number,
-      distance: Number,
-      zeroIndex: Number };
+      distance: Number };
 
-  }, //end of data
-
-  computed: _objectSpread({},
-  (0, _vuex.mapGetters)(['cellNumberToBeSelect'])),
-  //end of computed
-
+  }, //end of data		
 
   beforeMount: function beforeMount() {
-    // this.offset2BSelect = this.cellNumberToBeSelect ;
-    this.setOffset2BSelect(this.cellNumberToBeSelect);
-    // this.domOperation() ;
-
     this.Animation = wx.createAnimation({
       duration: 10,
       timingFunction: 'ease' });
 
-
-    this.currentIndex = this.zeroIndex;
-    this.setTransform(-(this.currentIndex - 1) * this.offsetWidth);
+    this.initAnim();
   }, //end of beforemounted()	
 
+  beforeUpdate: function beforeUpdate() {
+  }, //end of beforeUpdate()
+
+  computed: {
+    animDest: function animDest() {
+      return -this.offsetWidth * (this.currentIndex - 1);
+    } //end of animDest(currentIndex, offsetWidth)
+  }, //end of computed
+
+  watch: {
+    list2BSelect: function list2BSelect() {
+      this.initAnim();
+    } },
+  //end of watch		
+
   methods: {
+
+    initAnim: function initAnim() {
+      var baseIndex = 0;
+      for (var i = 0; i < this.list2BSelect.length; i++, baseIndex++) {
+        if (this.list2BSelect[i] === this.currentItem) break;
+      }
+      this.currentIndex = this.zeroIndex + baseIndex;
+      this.slideCount = this.list2BSelect.length;
+
+      this.setOffset2BSelect(this.list2BSelect);
+      this.setTransform(this.animDest);
+    }, //end of initAnim()
+
+    setTransform: function setTransform(dest) {
+      this.Animation.translateX(dest).step();
+      this.animate = this.Animation.export();
+    }, //end of setTransform(dest)		
+
     touchStart: function touchStart(e) {
       this.startX = e.touches[0].pageX;
-      // console.log(e.touches[0].pageX) ;
     }, //end of touchStart
 
     touchMove: function touchMove(e) {
       var currentX = e.touches[0].pageX;
       this.distance = currentX - this.startX;
-      // console.log(this.distance) ;
-      // if(Math.abs(this.distance) < this.offsetWidth) return ;
-      var currentPosition = -(this.currentIndex - 1) * this.offsetWidth;
-      var dest = currentPosition + this.distance;
-      // console.log(dest) ;
+      var dest = this.animDest + this.distance;
       this.setTransform(dest);
     }, //end of touchMove
 
     touchEnd: function touchEnd(e) {
       var dis = Math.abs(this.distance);
-
       if (dis === 0) return;
-      if (dis > this.offsetWidth * this.moveRatio) {
-        if (this.distance > 0) this.currentIndex--;
-        if (this.distance > this.offsetWidth * 1.75) this.currentIndex--;
-        if (this.distance < 0) this.currentIndex++;
-        if (this.distance < -this.offsetWidth * 1.75) this.currentIndex++;
+
+      var deltaDis = Math.floor(dis / this.offsetWidth);
+      var remain = dis % this.offsetWidth;
+
+      if (remain >= (1 - this.moveRatio) * this.offsetWidth) {
+        deltaDis++;
       }
-      console.log("distance: " + this.distance + "   this.offsetWidth: " + this.offsetWidth);
-      console.log(this.currentIndex);
-      console.log(this.slideCount);
-      this.setTransform(-(this.currentIndex - 1) * this.offsetWidth);
+      if (this.distance > 0) this.currentIndex -= deltaDis;
+      if (this.distance < 0) this.currentIndex += deltaDis;
+
+
+      // if(dis === 0) return ;
+      // if(dis > this.offsetWidth * this.moveRatio){
+      // 	if(this.distance > 0) this.currentIndex-- ;
+      // 	if(this.distance > this.offsetWidth * 1.75) this.currentIndex-- ;
+      // 	if(this.distance < 0) this.currentIndex++ ;
+      // 	if(this.distance < -this.offsetWidth * 1.75) this.currentIndex++ ;
+      // }
+      this.setTransform(this.animDest);
       this.checkPosition();
     }, //end of touchEnd
 
     checkPosition: function checkPosition() {
       if (this.currentIndex >= this.slideCount + this.zeroIndex) {
-        this.currentIndex = this.zeroIndex;
-      } else if (this.currentIndex < this.zeroIndex) {
-        this.currentIndex = this.slideCount + this.zeroIndex - 1;
+        var temp = this.currentIndex - this.slideCount - this.zeroIndex;
+        this.currentIndex = this.zeroIndex + temp;
+      } else if (this.currentIndex <= this.zeroIndex - 1) {
+        var _temp = this.currentIndex - (this.zeroIndex - 1);
+        this.currentIndex = this.slideCount + this.zeroIndex - 1 + _temp;
       }
-      console.log(this.currentIndex);
-      this.setTransform(-(this.currentIndex - 1) * this.offsetWidth);
+      this.setTransform(this.animDest);
     }, //end of checkPosition
 
     setOffset2BSelect: function setOffset2BSelect(newVal) {
+      this.offset2BSelect = newVal.slice(0);
+      var len = newVal.length;
 
-      this.offset2BSelect = [];
-      for (var i = 0; i < newVal.length; i++) {
-        if (newVal[i] === 0) this.offset2BSelect.push("空");else
-        this.offset2BSelect.push(newVal[i].toString());
+      if (len < 3) {
+        alert("list2BSelect should have more than 2 element");
+        console.log("list2BSelect should have more than 2 element");
+        return;
       }
-      console.log(this.offset2BSelect);
+      if (len === 3) {var _this$offset2BSelect, _this$offset2BSelect2;
+        var array = newVal.slice(0);
+        var cloneFirst = newVal[0];
+        var cloneLast = newVal[len - 1];
 
-      this.slideCount = this.offset2BSelect.length;
-      if (this.slideCount === 3) {
-
-      }
-      if (this.slideCount > 3) {
-        var cloneFirst = this.offset2BSelect[0];
-        var cloneSecond = this.offset2BSelect[1];
-        var cloneThird = this.offset2BSelect[2];
-        var cloneFour = this.offset2BSelect[3];
-        var cloneLast = this.offset2BSelect[this.slideCount - 1];
-        var cloneLastS = this.offset2BSelect[this.slideCount - 2];
-        var cloneLastT = this.offset2BSelect[this.slideCount - 3];
-        var cloneLastF = this.offset2BSelect[this.slideCount - 4];
+        (_this$offset2BSelect = this.offset2BSelect).push.apply(_this$offset2BSelect, _toConsumableArray(array));
+        (_this$offset2BSelect2 = this.offset2BSelect).unshift.apply(_this$offset2BSelect2, _toConsumableArray(array));
 
         this.offset2BSelect.push(cloneFirst);
-        this.offset2BSelect.push(cloneSecond);
-        this.offset2BSelect.push(cloneThird);
-        this.offset2BSelect.push(cloneFour);
         this.offset2BSelect.unshift(cloneLast);
-        this.offset2BSelect.unshift(cloneLastS);
-        this.offset2BSelect.unshift(cloneLastT);
-        this.offset2BSelect.unshift(cloneLastF);
-        this.offsetWidth = 100;
+      } else {var _this$offset2BSelect3, _this$offset2BSelect4;
+        var cloneFirst4 = newVal.slice(0, 4);
+        var cloneLast4 = newVal.slice(len - 4);
+
+        (_this$offset2BSelect3 = this.offset2BSelect).push.apply(_this$offset2BSelect3, _toConsumableArray(cloneFirst4));
+        (_this$offset2BSelect4 = this.offset2BSelect).unshift.apply(_this$offset2BSelect4, _toConsumableArray(cloneLast4));
       }
-      this.zeroIndex = 4;
-    }, // end of setOffset2BSelect(newVal)
-
-    setTransform: function setTransform(dest) {
-      // this.animate('#selector', [
-      //       {translateX: dest },
-      //     ], 50) ;
-      this.Animation.translateX(dest).step();
-      this.animate = this.Animation.export();
-    }, //end of setTransform(dest)
-
-
-    domOperation: function domOperation() {
-
-    }, //end of dowOperation
-
-    clickBtn1: function clickBtn1() {
-      this.$store.commit('changeSelectedCell', { row: 0, col: 0 });
-      console.log(this.cellNumberToBeSelect);
-    },
-    clickBtn2: function clickBtn2() {
-      this.$store.commit('changeSelectedCell', { row: 1, col: 2 });
-      console.log(this.cellNumberToBeSelect);
-    },
-
-    trigAnimation: function trigAnimation() {
-      // console.log('enter') ;
-      this.currentIndex++;
-      this.setTransform(-this.currentIndex * this.offsetWidth);
-      // this.Animation.translateX(-this.currentIndex * this.offsetWidth).step() ;
-      // this.animate = this.Animation.export() ;
-      // console.log(this.animate) ;
-    } // end of trigAnimation
-  }, //end of methods
+    } // end of setOffset2BSelect(newVal)					
+  },
+  //end of methods
 
   components: {
-    NumSelectorItem: NumSelectorItem
-    // console.log(this.$store.state.sudokuComp.sudokuState) ;		
-  }, //end of components
-
-  watch: {
-    cellNumberToBeSelect: function cellNumberToBeSelect(newVal, oldVal) {
-      console.log("newVal: " + newVal);
-      // this.setOffset2BSelect = newVal ;				
-      this.setOffset2BSelect(newVal);
-      this.slideCount = newVal.length;
-      // this.domOperation() ;
-    } } };exports.default = _default;
+    NumSelectorItem: NumSelectorItem }
+  //end of components		
+};exports.default = _default;
 
 /***/ }),
 

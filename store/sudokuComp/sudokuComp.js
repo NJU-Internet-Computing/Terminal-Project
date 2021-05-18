@@ -1,7 +1,4 @@
-import {changeSelectedCell, 
-				cellNumberToBeSelect,
-				cellNumberToBeDisplay}
-				from './sudokuCompConst.js' ;
+import servise	from './sudokuCompConst.js' ;
 // console.log(cellNumberToBeDisplay) ;
 const moduleSudokuComp = {
 	state:()=>({
@@ -33,6 +30,7 @@ const moduleSudokuComp = {
 		
 		selectedCellRow: 0, 
 		selectedCellCol: 0,
+		selectedCellCurrentNumber: 0,
 	}),// end of state,
 	
 	mutations: {
@@ -40,7 +38,7 @@ const moduleSudokuComp = {
 		 * @param {Object} state of sudokuComp
 		 * @param {Object} payload {row: Number, col: Number} 
 		 */
-		[changeSelectedCell](state, payload){			
+		[servise.changeSelectedCell](state, payload){			
 			console.log(payload) ;
 			state.selectedCellRow = payload.row ;
 			state.selectedCellCol = payload.col ;
@@ -93,15 +91,25 @@ const moduleSudokuComp = {
 			return result ;
 		},// end of screenNumber
 		
-		[cellNumberToBeSelect]: (state, getters) =>{			
+		[servise.cellNumberToBeSelect]: (state, getters) =>{			
 			// return  getters.screenNumber(state.currentSudokuState) ;
-			return [0, 1, 2, 3, 4, 5] ;
+			return [0, 1, 2, 3, 4] ;
 		},// end of cellNumberToBeSelect(state)
 		
-		[cellNumberToBeDisplay]: (state, getters) => {
+		[servise.cellNumberToBeDisplay]: (state, getters) => {
 			return getters.screenNumber(state.initSudokuState) ;
 		},// end of cellNumberToBeDisplay(state)
 		
+		[servise.selectedCell]: state =>{
+			return {
+				selectedCellRow: state.selectedCellRow,				
+				selectedCellCol: state.selectedCellCol,
+			}
+		},//end of servise.selectedCell
+		
+		[servise.selectedCellCurrentNumber]: state=>{
+			return state.selectedCellCurrentNumber ;
+		},//end of servise.selectedCellCurrentNumber
 	},//end of getters
 }
 export default moduleSudokuComp ;

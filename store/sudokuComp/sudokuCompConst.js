@@ -1,6 +1,16 @@
 //mutations
-export const changeSelectedCell = 'changeSelectedCell' ;
+const changeSelectedCell = 'changeSelectedCell' ;
 
 //getters
-export const cellNumberToBeSelect = 'cellNumberToBeSelect' ;
-export const cellNumberToBeDisplay = 'cellNumberToBeDisplay' ;
+const cellNumberToBeSelect = 'cellNumberToBeSelect' ;
+const cellNumberToBeDisplay = 'cellNumberToBeDisplay' ;
+const selectedCell = 'selectedCell' ;
+const selectedCellCurrentNumber = 'selectedCellCurrentNumber' ;
+
+export default {
+	changeSelectedCell,
+	cellNumberToBeSelect,
+	cellNumberToBeDisplay,
+	selectedCell,
+	selectedCellCurrentNumber,
+}
