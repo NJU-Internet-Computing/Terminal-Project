@@ -1,1 +1,0 @@
-<view><board vue-id="dca0a53c-1" bind:__l="__l"></board><num-selector vue-id="dca0a53c-2" disableFlag="{{!selectedCellDisableFlag}}" list2BSelect="{{offset2BSelect}}" currentItem="{{currNum}}" id="NumSelector" data-event-opts="{{[['^selected',[['getSelectedNumber']]]]}}" bind:selected="__e" bind:__l="__l"></num-selector></view>

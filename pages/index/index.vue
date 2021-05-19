@@ -10,6 +10,7 @@
 	
 		<u-button open-type="default"  ripple  ripple-bg-color="#9eeaf9" @click="navigate2">
 			调试用
+			
 		</u-button>
 		
 	</view>
