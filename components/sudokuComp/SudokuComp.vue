@@ -1,9 +1,12 @@
 <template>
 	<view>
-		<Board id="Board"></Board>
+		<Board></Board>
 		
-		<view class="view">try slide the following NumSelector</view>
-		<NumSelector 
+		<!-- <view class="view">try slide the following NumSelector</view> -->
+		<!-- <button @click="showNumSelector">switch</button> -->
+		
+		<NumSelector
+			:disableFlag="!selectedCellDisableFlag"
 			:list2BSelect="offset2BSelect" 
 			:currentItem="currNum"
 			id="NumSelector"
@@ -11,11 +14,12 @@
 		>
 		</NumSelector>
 		
+		
 	</view>
 </template>
 
 <script>
-	import {mapGetters, mapMutations} from 'vuex' ;
+	import {mapGetters, mapMutations, mapState} from 'vuex' ;
 	import Board from './Board/Board.vue' ;
 	import NumSelector from './NumSelector/NumSelector.vue' ;
 	
@@ -36,6 +40,7 @@
 		
 		data(){
 			return {
+				show: true,
 				offset2BSelect: Array, 
 				currNum: Number,
 			}
@@ -46,6 +51,7 @@
 				'cellNumberToBeSelect', 
 				'selectedCell', 
 				'selectedCellCurrentNumber',
+				'selectedCellDisableFlag'
 			]),//end of mapGetters
 			
 		},//end of computed
@@ -53,7 +59,8 @@
 		watch:{
 			selectedCell(newVal, oldVal){
 				this.getSelectedCellInfo() ;
-			},//end of selectedCell			
+			},//end of selectedCell		
+			
 		},//end of watch
 		
 		beforeMount() {			
@@ -68,6 +75,10 @@
 		},//end of mounted()
 		
 		methods:{			
+			showNumSelector(){
+				this.show = !this.show ;
+			},
+			
 			...mapMutations([
 				'initSudokuState',
 				'mutateSelectedCellCurrentNumber',
@@ -80,9 +91,11 @@
 				this.mutateSelectedCellCurrentNumber({
 					currentNumber: num,
 				})
+				// console.log("mutate num: " + num) ;
 			},
 			
-			getSelectedCellInfo(){				
+			getSelectedCellInfo(){
+				console.log("2Bselect: " + this.cellNumberToBeSelect) ;
 				this.setOffset2BSelect(this.cellNumberToBeSelect) ;
 				this.setCurrNum(this.selectedCellCurrentNumber) ;
 			},//end of getSelectedCellInfo
@@ -119,7 +132,4 @@
 		margin: 0 auto ;
 	}
 	
-	#NumSelector{
-		
-	}
 </style>

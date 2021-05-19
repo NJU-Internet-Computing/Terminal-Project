@@ -1,26 +1,34 @@
 <template>
 	<view>
 		<view class="hy-selector">
+			
+			<u-icon
+				class="indicator" 
+				name="arrow-downward"
+				size="30rpx">
+			</u-icon>
+			
 			<view
-			class="selector"
-			id="selector"
-			@touchstart="touchStart"
-			@touchmove="touchMove"
-			@touchend="touchEnd" 
-			:animation="animate"
+				class="selector"
+				id="selector"
+				@touchstart="touchStart"
+				@touchmove="touchMove"
+				@touchend="touchEnd" 
+				:animation="animate"
+				v-show="disableFlag"
 			>			
 				<NumSelectorItem v-for="(item, index) in offset2BSelect" 
 				:key="index" >
-					<template v-slot:item>
-						<view :class="{'selected': (index === currentIndex)}">{{item}}</view>
-						<!-- <view>{{item}}</view> -->
+					<template slot="item">
+						<view :class="{'selected': (index === currentIndex)}">{{item}}</view>						
 					</template>
 				</NumSelectorItem>				
 			</view>
-			<!-- end of selector -->			
-			</view>
+			<!-- end of selector -->				
 			
-			<view class="indicator">↑</view>
+			
+		</view>
+		<!-- end of hy-selector -->
 	</view>	
 </template>
 
@@ -36,13 +44,16 @@
 			currentItem:{
 				type: [Number, String],				
 			},
+			disableFlag:{
+				type:Boolean,
+			}
 		},//end of props
 		
 		data(){
 			return {
 				offset2BSelect: Array,
 				slideCount: 0,
-				offsetWidth: 100,				
+				offsetWidth: 125,				
 				
 				Animation: Object,
 				animate: Object,
@@ -134,6 +145,7 @@
 				this.checkPosition() ;
 				
 				this.$emit('selected', this.offset2BSelect[this.currentIndex]) ;
+				this.distance = 0 ;
 			},//end of touchEnd
 			
 			checkPosition(){				
@@ -186,17 +198,21 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.hy-selector{
 		overflow: hidden;
 		position: relative ;
-		width: 600rpx;
-		height: 80rpx ;
-		line-height: 80rpx;
-		margin: 0 auto ;		
-		background-color: red;
+		width: 750rpx;
+		height: 150rpx ;
+		line-height: 60rpx;
+		margin: 40rpx 0rpx auto ;		
+		background-color: $u-type-info-disabled;
+		opacity: 0.5;
+		border-top: 4rpx solid #3F536E;
+		border-bottom: 4rpx solid #3F536E;
 	}
-	.selector{	
+	.selector{
+		height: 100%;
 		display: flex;
 		flex-direction: row;
 		/* justify-content: space-around ; */
@@ -215,10 +231,11 @@
 	} */
 	
 	.indicator{
+		position: relative;
+		left: 360rpx;
 		margin: 0 auto ;
 		text-align: center;
-		font-weight: 700;
-		font-size: 50rpx;
+		z-index: 20;
 	}
 
 </style>

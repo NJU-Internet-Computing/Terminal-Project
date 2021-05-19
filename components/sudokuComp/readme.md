@@ -2,6 +2,18 @@
 
 ## 功能
 
+
+
+### 补充
+
+重开一局
+
+撤销操作，清空操作
+
+numselector优化
+
+改变候选数（同时改变dispay与select）
+
 ### NORMAL玩法
 
 1. 玩家在81个格子中选择一个格子
@@ -179,11 +191,26 @@ prop:{
 
 ## 流程
 
-### NORMAL
+### 公共部分
 
-vuex：selectedCellRow，selectedCellCol，selectedCellCurrentNumber
+vuex：selectedCellRow，selectedCellCol，selectedCellCurrentNumber，gameMode，origSudokuState，currentSudokuState
+
+
+
+初始化：
+
+1. 调用者传入gameMode与sudokuState给sudokuComp，sudokuComp广播这两个参数
+2. Vuex初始化gameMode，origSudokuState，currentSudokuState
+
+
 
 每个Cell 持有自己的在整个Board中的位置（row, col），selected：Boolean，currentNumber：Number
+
+**使用getter监听cellSelfState（row，col），cellNum2BDisplay（row, col)**的变化，
+
+
+
+### NORMAL
 
 1. 用户Click一个Cell，该Cell广播自己的$(row, col)与currentNumber$，自己设为selected=true，其余cell设selected=false
 2. sudokuComp监听有新的Cell被选择，监听获取新的cellNumberToBeSelect保存到本地，将本地的cNTBS按固定规则修改，监听获取currentNumber，将这两个参数传入numSelector显示，并监听选择效果
@@ -192,3 +219,15 @@ vuex：selectedCellRow，selectedCellCol，selectedCellCurrentNumber
 5. 对属于一个Unit中的Cell，重新计算自己的候选数字
 
 ### PUZZLE
+
+初始化
+
+
+
+playing：
+
+1. 用户滑动一个手势，Board判断手势方向，判断某个Block进行移动，广播Block的变更
+2. VueX中，监听变更，修改currentSudokuState，
+
+
+

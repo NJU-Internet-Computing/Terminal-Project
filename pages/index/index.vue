@@ -7,11 +7,11 @@
 		<view class="text-area">
 			<text class="title">{{title}}</text>
 		</view>
-		<navigator url="../../components/sudokuComp/SudokuComp">
-			<button open-type="default">
-				调试用
-			</button>			
-		</navigator>
+	
+		<u-button open-type="default"  ripple  ripple-bg-color="#9eeaf9" @click="navigate2">
+			调试用
+		</u-button>
+		
 	</view>
 </template>
 
@@ -26,8 +26,16 @@
 
 		},
 		methods: {
-
-		}
+			navigate2(){
+				setTimeout(()=>{
+					console.log("navigate to") ;
+					uni.navigateTo({
+						url: "../../components/sudokuComp/SudokuComp",
+					}) ;
+				}, 250) ;
+				
+			},//end of naviagate2
+		},//end of methods
 	}
 </script>
 

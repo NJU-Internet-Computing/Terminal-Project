@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/sudokuComp/NumSelector/NumSelector":1,"components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem":1};
+/******/ 		var cssChunks = {"node-modules/uview-ui/components/u-button/u-button":1,"components/sudokuComp/Board/Board":1,"components/sudokuComp/NumSelector/NumSelector":1,"components/sudokuComp/Square/Square":1,"components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem":1,"node-modules/uview-ui/components/u-icon/u-icon":1,"components/sudokuComp/Cell/Cell":1,"components/sudokuComp/TinyCell/TinyCell":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/sudokuComp/Board/Board":"components/sudokuComp/Board/Board","components/sudokuComp/NumSelector/NumSelector":"components/sudokuComp/NumSelector/NumSelector","components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem":"components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"node-modules/uview-ui/components/u-button/u-button":"node-modules/uview-ui/components/u-button/u-button","components/sudokuComp/Board/Board":"components/sudokuComp/Board/Board","components/sudokuComp/NumSelector/NumSelector":"components/sudokuComp/NumSelector/NumSelector","components/sudokuComp/Square/Square":"components/sudokuComp/Square/Square","components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem":"components/sudokuComp/NumSelector/NumSelectorItem/NumSelectorItem","node-modules/uview-ui/components/u-icon/u-icon":"node-modules/uview-ui/components/u-icon/u-icon","components/sudokuComp/Cell/Cell":"components/sudokuComp/Cell/Cell","components/sudokuComp/TinyCell/TinyCell":"components/sudokuComp/TinyCell/TinyCell"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

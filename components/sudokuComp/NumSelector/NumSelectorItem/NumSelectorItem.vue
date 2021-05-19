@@ -21,10 +21,12 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	/* @import url("../../../../uni.scss") ; */
 	.NumSelectorItem{
-		color: #FFFFFF;
-		width: 200rpx ;
+		color: #101010;
+		// color: $uni-color-error;
+		width: 250rpx ;
 	}
 	
 </style>
