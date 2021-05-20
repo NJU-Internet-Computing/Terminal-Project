@@ -123,7 +123,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   props: {
-    display: "" },
+    display: "",
+    selectedFlag: Boolean },
   //end of props		
 
   data: function data() {

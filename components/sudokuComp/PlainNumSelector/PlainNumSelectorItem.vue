@@ -5,6 +5,7 @@
 </template>
 
 <script>
+	import PlainNumSelectorItem from './PlainNumSelectorItem.vue'
 	export default{	
 		props: {
 			propName: {

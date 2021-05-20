@@ -1,5 +1,5 @@
 <template>
-	<view class="cell" @click="clickCell">
+	<view class="cell" :class="{'selectedCell': selected}" @click="clickCell" >
 		<view v-show="!emptyFlag" 
 			class="cellContent" 
 			:class="{'disable': disableFlag}"
@@ -16,7 +16,8 @@
 				<TinyCell 
 					v-for="(col, colIndex) in row" 
 					:key="colIndex" 
-					:display="offset2BDisplay[col]">				
+					:display="offset2BDisplay[col]"
+					:selectedFlag="selected">				
 				</TinyCell>
 			</view>
 		</view>
@@ -144,12 +145,17 @@
 		height:76rpx;
 		border: 2rpx solid #808080 ;
 	}
+	.selectedCell{
+		border-style: outset;
+		background-color: #A0A0A0;
+	}
 	.cellContent{
 		line-height: 76rpx;
 		text-align: center;
 		
 		font-size: 56rpx;
-		color: #FFFFFF;
+		/* color: #FFFFFF;*/
+		color: #404040;
 	}
 	.disable{
 		color: #08caff ;

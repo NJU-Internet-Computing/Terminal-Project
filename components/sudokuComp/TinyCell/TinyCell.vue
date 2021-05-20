@@ -1,5 +1,5 @@
 <template>
-	<view class="tinyCell">
+	<view class="tinyCell" :class="{'selectedFlag': selectedFlag}">
 		{{offsetDisplay}}
 	</view>
 </template>
@@ -7,7 +7,8 @@
 <script>
 	export default{	
 		props: {
-			display: ""
+			display: "",
+			selectedFlag: Boolean,
 		},//end of props		
 		
 		data(){
@@ -52,5 +53,8 @@
 		text-align: center;
 		font-size: 22rpx;
 		color: #aaaaaa;
+	}
+	.selectedFlag{
+		color: #FFFFFF;
 	}
 </style>
