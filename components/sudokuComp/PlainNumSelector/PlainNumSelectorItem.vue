@@ -1,17 +1,18 @@
 <template>
-	<view>
-		
+	<view 
+		class="PlainNumSelectorItem" 
+		:class='{"disable": disableFlag}'
+		@click="clickItem"
+	>
+		{{val}}
 	</view>
 </template>
 
 <script>
-	import PlainNumSelectorItem from './PlainNumSelectorItem.vue'
 	export default{	
 		props: {
-			propName: {
-				type: Number,
-				default: 
-			},
+			val: Number,
+			disableFlag: Boolean,
 		},//end of props		
 		
 		data(){
@@ -20,15 +21,9 @@
 		},//end of data
 		
 		computed: {
-			name() {
-				return this.data 
-			}
 		},//end of computed
 		
 		watch: {
-			data(newValue, oldValue) {
-				
-			},//end of data
 		},//end of watch
 		
 		beforeMounted(){
@@ -39,6 +34,9 @@
 		},//end of mounted()	
 		
 		methods:{			
+			clickItem(){
+				if(!this.disableFlag)	this.$emit('click') ;
+			}
 		},//end of methods		
 		
 		components:{			
@@ -46,6 +44,16 @@
 	}
 </script>
 
-<style>
-	
+<style lang="scss">
+	.PlainNumSelectorItem{
+		font-size: 80rpx;
+		font-weight: 700;
+		color: #101010;
+		// color: $uni-color-error;
+		width: 80rpx ;
+	}
+	.disable{
+		color: red ;
+		opacity: .3;
+	}
 </style>

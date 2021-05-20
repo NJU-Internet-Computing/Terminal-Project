@@ -10,6 +10,12 @@
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
 	        flex-direction: column;
+	
+	-webkit-box-pack: center ;
+	
+	-webkit-justify-content: center ;
+	
+	        justify-content: center ;
 	/* width: 216rpx ;
 	border: 4rpx solid #C8C7CC;
 	height: 216rpx ;
@@ -27,5 +33,8 @@
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: row;
 	        flex-direction: row;
+	-webkit-box-pack: center ;
+	-webkit-justify-content: center ;
+	        justify-content: center ;
 }
 

@@ -71,6 +71,8 @@
 		border: 4rpx solid #333333 ;
 		display: flex;
 		flex-direction: column;
+		
+		justify-content: center ;
 		/* width: 216rpx ;
 		border: 4rpx solid #C8C7CC;
 		height: 216rpx ;
@@ -83,6 +85,7 @@
 	.cellRow{
 		display: flex;
 		flex-direction: row;
-	
+		justify-content: center ;
+		
 	}
 </style>

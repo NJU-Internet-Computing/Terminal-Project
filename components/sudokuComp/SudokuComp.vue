@@ -17,7 +17,7 @@
 				open-type="default"  
 				ripple  
 				ripple-bg-color="#9eeaf9" 
-				@click="navigate2"
+				@click="getSelectedNumber(0)"
 			>
 				清空
 			</u-button>
@@ -31,14 +31,23 @@
 			</u-button>
 		</view>
 		
-		<NumSelector
+<!-- 		<NumSelector
 			:disableFlag="!selectedCellDisableFlag"
 			:list2BSelect="offset2BSelect" 
 			:currentItem="currNum"
 			id="NumSelector"
 			@selected="getSelectedNumber"
 		>
-		</NumSelector>
+		</NumSelector> -->
+		
+		<PlainNumSelcotr
+			:disableFlag="selectedCellDisableFlag"
+			:list2BSelect="offset2BSelect" 
+			:currentItem="currNum"
+			id="NumSelector"
+			@selected="getSelectedNumber"
+			v-show="showSelector">			
+		</PlainNumSelcotr>
 		
 		
 	</view>
@@ -48,6 +57,7 @@
 	import {mapGetters, mapMutations} from 'vuex' ;
 	import Board from './Board/Board.vue' ;
 	import NumSelector from './NumSelector/NumSelector.vue' ;
+	import PlainNumSelcotr from './PlainNumSelector/PlainNumSelector.vue' ;
 	import stack from './stack.js' ;
 	
 	export default{
@@ -71,7 +81,7 @@
 				offset2BSelect: Array, 
 				currNum: Number,
 				stack,
-				
+				showSelector: false,
 			}
 		},//end of data
 		
@@ -89,6 +99,7 @@
 		watch:{
 			selectedCellInfo: {
 				handler(newVal, oldVal){
+					this.showSelector = true ;
 					if(newVal.from_comp === "Cell")	
 						this.stack.push(JSON.parse(JSON.stringify(newVal))) ;					
 					
@@ -106,7 +117,8 @@
 			this.getSelectedCellInfo() ;
 		},//end of beforeMount()		
 		
-		mounted(){			
+		mounted(){
+			
 		},//end of mounted()
 		
 		methods:{			
@@ -126,6 +138,7 @@
 				this.mutateSelectedCellInfo(temp) ;
 			},//end of withdraw()
 			
+			
 			showNumSelector(){
 				this.show = !this.show ;
 			},
@@ -137,9 +150,11 @@
 			]),//end of mapMutations
 			
 			getSelectedNumber(selectedNumber){
-				let num = 0;
-				if((selectedNumber >= "1") && (selectedNumber <= "9")) 
-					num = Number(selectedNumber) ;
+				console.log(selectedNumber) ;
+				// let num = 0;
+				// if((selectedNumber >= "1") && (selectedNumber <= "9")) 
+				// 	num = Number(selectedNumber) ;
+				let num = selectedNumber ;
 				this.mutateSelectedCellCurrentNumber({
 					currentNumber: num,
 				}) ;				
@@ -149,6 +164,9 @@
 			getSelectedCellInfo(){
 				this.setOffset2BSelect(this.cellNumberToBeSelect) ;
 				this.setCurrNum(this.selectedCellCurrentNumber) ;
+				console.log("in SudokuComp  func:getSelectedCellInfo")
+				console.log(this.offset2BSelect) ;
+				console.log(this.currNum) ;
 			},//end of getSelectedCellInfo
 			
 			setNumByRule(val){
@@ -157,13 +175,15 @@
 			},//end of setNumbRule
 			
 			setCurrNum(newVal){
-				this.currNum = this.setNumByRule(newVal) ;
+				this.currNum = newVal ;
+				// this.currNum = this.setNumByRule(newVal) ;
 			},//end of newVal
 			
-			setOffset2BSelect(newVal){				
-				this.offset2BSelect = [] ;
+			setOffset2BSelect(newVal){
+				this.offset2BSelect = [] ;				
 				for(var i = 0; i < newVal.length; i++){
-					this.offset2BSelect.push(this.setNumByRule(newVal[i])) ;
+					// this.offset2BSelect.push(this.setNumByRule(newVal[i])) ;
+					this.offset2BSelect.push(newVal[i]) ;
 				}		
 			}, // end of setOffset2BSelect(newVal)
 			
@@ -173,6 +193,7 @@
 		components:{
 			Board, 
 			NumSelector,
+			PlainNumSelcotr,
 		},//end of components
 	}
 </script>

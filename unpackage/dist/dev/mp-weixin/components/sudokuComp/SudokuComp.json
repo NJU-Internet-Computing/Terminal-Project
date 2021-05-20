@@ -4,6 +4,7 @@
   "usingComponents": {
     "u-button": "/node-modules/uview-ui/components/u-button/u-button",
     "board": "/components/sudokuComp/Board/Board",
-    "num-selector": "/components/sudokuComp/NumSelector/NumSelector"
+    "num-selector": "/components/sudokuComp/NumSelector/NumSelector",
+    "plain-num-selcotr": "/components/sudokuComp/PlainNumSelector/PlainNumSelector"
   }
 }

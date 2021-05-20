@@ -238,6 +238,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
     }, //end of selfCurrentState			
 
     clickCell: function clickCell() {
+      if (this.disableFlag) return;
       this.selected = true;
       this.mutateSelectedCellInfo({
         row: this.cellRow,

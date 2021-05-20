@@ -122,6 +122,7 @@
 			},//end of selfCurrentState			
 			
 			clickCell(){
+				if(this.disableFlag) return ;
 				this.selected = true ;
 				this.mutateSelectedCellInfo({
 					row: this.cellRow,
