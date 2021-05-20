@@ -66,17 +66,10 @@
 		mounted(){			
 		},//end of mounted()
 		
-		methods:{			
-			clickSquare(){
-			},
+		methods:{	
 			getKey(row, col){
 				return row*3+col ;
 			},
-			click(e, i){
-				console.log(i) ;
-				this.dest+=100 ;
-				this.setTransform(this.dest, i) ;
-			},//
 			setTransform(dest, i){
 				this.Animation.translateX(dest).step() ;
 				this.animate[i] = this.Animation.export() ;

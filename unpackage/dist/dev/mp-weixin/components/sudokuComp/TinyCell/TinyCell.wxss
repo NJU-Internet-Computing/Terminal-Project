@@ -1,0 +1,10 @@
+
+.tinyCell{
+	height:24rpx;
+	width:24rpx;
+	line-height: 22rpx;
+	text-align: center;
+	font-size: 22rpx;
+	color: #aaaaaa;
+}
+

@@ -11,10 +11,14 @@ const moduleSudokuComp = {
 		//the player change this state
 		currentSudokuState: [],//end of currentSudokuState
 		
-		selectedCellRow: 0, 
-		selectedCellCol: 0,
-		selectedCellCurrentNumber: 0,
-		selectedCellDisableFlag: true,
+		selectedCellInfo: {
+			row: 0,
+			col: 0,
+			currentNumber: 0,
+			disableFlag: true,
+			from_comp: "",
+		},		
+		
 	}),// end of state,
 	
 	mutations: {
@@ -23,21 +27,18 @@ const moduleSudokuComp = {
 		 * @param {Object} payload {row: Number, col: Number} 
 		 */
 		[servise.mutateSelectedCellInfo](state, payload){
-			state.selectedCellRow = payload.row ;
-			state.selectedCellCol = payload.col ;
-			state.selectedCellCurrentNumber = payload.currentNumber ;
-			state.selectedCellDisableFlag = payload.disableFlag ;
-			console.log("vueX: ") ;
-			console.log(state.selectedCellCurrentNumber + " " +state.selectedCellDisableFlag )
+			console.log("Vuex mutation selectedCellInfo")
+			console.log(payload) ;
+			state.selectedCellInfo = payload ;
 		},//end of servise.mutateSelectedCell
 		
 		[servise.mutateSelectedCellCurrentNumber](state, payload){
 			
-			let row = state.selectedCellRow ;
-			let col = state.selectedCellCol ;
+			let row = state.selectedCellInfo.row ;
+			let col = state.selectedCellInfo.col ;
 			
-			state.selectedCellCurrentNumber = payload.currentNumber ;
-			state.currentSudokuState[row][col] = state.selectedCellCurrentNumber ;
+			state.selectedCellInfo.currentNumber = payload.currentNumber ;
+			state.currentSudokuState[row][col] = state.selectedCellInfo.currentNumber ;
 			// console.log(state.currentSudokuState[row][col]) ;
 		},//end of servise.mutateSelectedCellCurrentNumber
 		
@@ -126,7 +127,10 @@ const moduleSudokuComp = {
 		},// end of screenNumber
 		
 		[servise.cellNumberToBeSelect]: (state, getters) =>{			
-			return  getters.screenNumber(state.origSudokuState, state.selectedCellRow, state.selectedCellCol) ;
+			return  getters.screenNumber(
+			state.origSudokuState,
+			state.selectedCellInfo.row,
+			state.selectedCellInfo.col) ;
 			// return [0, 1, 2, 3, 4] ;
 		},// end of cellNumberToBeSelect(state)
 		
@@ -134,16 +138,20 @@ const moduleSudokuComp = {
 		// 	return getters.screenNumber(state.origSudokuState, state.selectedCellRow, state.selectedCellCol) ;
 		// },// end of cellNumberToBeDisplay(state)
 		
-		[servise.selectedCell]: state =>{
+		[servise.selectedCellCoordinate]: state =>{
 			return {
-				selectedCellRow: state.selectedCellRow,				
-				selectedCellCol: state.selectedCellCol,
-				selectedCellDisableFlag: state.selectedCellDisableFlag,
+				selectedCellRow: state.selectedCellInfo.row,				
+				selectedCellCol: state.selectedCellInfo.col,
+				from_comp: state.selectedCellInfo.from_comp,
 			}
+		},//end of selectedCellCoordinate
+		
+		[servise.selectedCellInfo]: state =>{
+			return state.selectedCellInfo
 		},//end of servise.selectedCell
 		
 		[servise.selectedCellCurrentNumber]: state=>{
-			return state.selectedCellCurrentNumber ;
+			return state.selectedCellInfo.currentNumber ;
 		},//end of servise.selectedCellCurrentNumber
 		
 		[servise.cellCurrentState]: (state, getters) => (row, col) =>{
@@ -155,7 +163,7 @@ const moduleSudokuComp = {
 			return getters.screenNumber(state.currentSudokuState, row, col) ;
 		} ,//end of servise.cellNum2BDisplay
 		
-		[servise.selectedCellDisableFlag]: state => state.selectedCellDisableFlag ,
+		[servise.selectedCellDisableFlag]: state => state.selectedCellInfo.disableFlag ,
 		[servise.gameMode]: state => state.gameMode ,
 	},//end of getters
 }

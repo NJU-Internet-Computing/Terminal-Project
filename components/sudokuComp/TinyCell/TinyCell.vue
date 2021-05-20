@@ -33,7 +33,7 @@
 		},//end of beforeMounted
 		
 		mounted(){
-			// console.log(this.offsetDisplay) ;
+			
 		},//end of mounted()	
 		
 		methods:{			

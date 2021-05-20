@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "board": "/components/sudokuComp/Board/Board",
+    "num-selector": "/components/sudokuComp/NumSelector/NumSelector"
+  }
+}

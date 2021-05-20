@@ -4,6 +4,32 @@
 		
 		<!-- <view class="view">try slide the following NumSelector</view> -->
 		<!-- <button @click="showNumSelector">switch</button> -->
+		<view class="operations">
+			<u-button 
+				open-type="default"  
+				ripple  
+				ripple-bg-color="#9eeaf9" 
+				@click="revoke"
+			>
+				撤销			
+			</u-button>
+			<u-button 
+				open-type="default"  
+				ripple  
+				ripple-bg-color="#9eeaf9" 
+				@click="navigate2"
+			>
+				清空
+			</u-button>
+			<u-button 
+				open-type="default"  
+				ripple  
+				ripple-bg-color="#9eeaf9" 
+				@click="withdraw"
+			>
+				撤回	
+			</u-button>
+		</view>
 		
 		<NumSelector
 			:disableFlag="!selectedCellDisableFlag"
@@ -19,9 +45,10 @@
 </template>
 
 <script>
-	import {mapGetters, mapMutations, mapState} from 'vuex' ;
+	import {mapGetters, mapMutations} from 'vuex' ;
 	import Board from './Board/Board.vue' ;
 	import NumSelector from './NumSelector/NumSelector.vue' ;
+	import stack from './stack.js' ;
 	
 	export default{
 		props:{
@@ -43,13 +70,16 @@
 				show: true,
 				offset2BSelect: Array, 
 				currNum: Number,
+				stack,
+				
 			}
 		},//end of data
 		
 		computed:{
 			...mapGetters([
 				'cellNumberToBeSelect', 
-				'selectedCell', 
+				'selectedCellCoordinate',
+				'selectedCellInfo',
 				'selectedCellCurrentNumber',
 				'selectedCellDisableFlag'
 			]),//end of mapGetters
@@ -57,8 +87,13 @@
 		},//end of computed
 		
 		watch:{
-			selectedCell(newVal, oldVal){
-				this.getSelectedCellInfo() ;
+			selectedCellInfo: {
+				handler(newVal, oldVal){
+					if(newVal.from_comp === "Cell")	
+						this.stack.push(JSON.parse(JSON.stringify(newVal))) ;					
+					
+					this.getSelectedCellInfo() ;
+				},
 			},//end of selectedCell		
 			
 		},//end of watch
@@ -75,6 +110,22 @@
 		},//end of mounted()
 		
 		methods:{			
+			
+			revoke(){
+				let temp = this.stack.revoke() ;
+				if(!temp) return ;
+				temp.from_comp = "SudokuComp",				
+				this.mutateSelectedCellInfo(temp) ;
+			},//end of revoke()
+			
+			withdraw(){
+				console.log("withdraw") ;				
+				let temp = this.stack.withdraw() ;
+				if(!temp) return ;
+				temp.from_comp = "SudokuComp",
+				this.mutateSelectedCellInfo(temp) ;
+			},//end of withdraw()
+			
 			showNumSelector(){
 				this.show = !this.show ;
 			},
@@ -82,6 +133,7 @@
 			...mapMutations([
 				'initSudokuState',
 				'mutateSelectedCellCurrentNumber',
+				'mutateSelectedCellInfo',
 			]),//end of mapMutations
 			
 			getSelectedNumber(selectedNumber){
@@ -90,12 +142,11 @@
 					num = Number(selectedNumber) ;
 				this.mutateSelectedCellCurrentNumber({
 					currentNumber: num,
-				})
-				// console.log("mutate num: " + num) ;
+				}) ;				
+				this.stack.push(JSON.parse(JSON.stringify(this.selectedCellInfo))) ;	
 			},
 			
 			getSelectedCellInfo(){
-				console.log("2Bselect: " + this.cellNumberToBeSelect) ;
 				this.setOffset2BSelect(this.cellNumberToBeSelect) ;
 				this.setCurrNum(this.selectedCellCurrentNumber) ;
 			},//end of getSelectedCellInfo
@@ -131,5 +182,10 @@
 		text-align: center;
 		margin: 0 auto ;
 	}
-	
+	.operations{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		margin: 10rpx 10rpx auto;
+	}
 </style>

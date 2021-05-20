@@ -29,7 +29,6 @@
 		methods: {
 			navigate2(){
 				setTimeout(()=>{
-					console.log("navigate to") ;
 					uni.navigateTo({
 						url: "../../components/sudokuComp/SudokuComp",
 					}) ;
