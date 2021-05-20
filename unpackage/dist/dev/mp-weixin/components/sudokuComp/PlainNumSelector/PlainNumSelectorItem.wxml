@@ -1,1 +1,0 @@
-<view data-event-opts="{{[['tap',[['clickItem',['$event']]]]]}}" class="{{['PlainNumSelectorItem',(disableFlag)?'disable':'']}}" bindtap="__e">{{''+val+''}}</view>

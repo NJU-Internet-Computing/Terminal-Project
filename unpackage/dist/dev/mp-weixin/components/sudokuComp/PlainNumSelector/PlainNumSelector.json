@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "plain-num-selector-item": "/components/sudokuComp/PlainNumSelector/PlainNumSelectorItem",
-    "plain-num-selector-indi-frame": "/components/sudokuComp/PlainNumSelector/PlainNumSelectorIndiFrame"
-  },
-  "component": true
-}
