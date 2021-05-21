@@ -118,6 +118,7 @@
 		},//end of beforeMount()		
 		
 		mounted(){
+			console.log("hook: mounted: ")
 			
 		},//end of mounted()
 		
@@ -128,6 +129,7 @@
 				if(!temp) return ;
 				temp.from_comp = "SudokuComp",				
 				this.mutateSelectedCellInfo(temp) ;
+				this.setCurrNum(this.selectedCellCurrentNumber) ;
 			},//end of revoke()
 			
 			withdraw(){
@@ -136,6 +138,7 @@
 				if(!temp) return ;
 				temp.from_comp = "SudokuComp",
 				this.mutateSelectedCellInfo(temp) ;
+				this.setCurrNum(this.selectedCellCurrentNumber) ;
 			},//end of withdraw()
 			
 			
@@ -158,6 +161,7 @@
 				this.mutateSelectedCellCurrentNumber({
 					currentNumber: num,
 				}) ;				
+				this.setCurrNum(num) ;
 				this.stack.push(JSON.parse(JSON.stringify(this.selectedCellInfo))) ;	
 			},
 			

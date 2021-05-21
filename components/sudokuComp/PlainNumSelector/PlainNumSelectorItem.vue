@@ -48,12 +48,12 @@
 	.PlainNumSelectorItem{
 		font-size: 80rpx;
 		font-weight: 700;
-		color: #101010;
+		color: #405878;
 		// color: $uni-color-error;
 		width: 80rpx ;
 	}
 	.disable{
-		color: red ;
+		color: #A088A0 ;
 		opacity: .3;
 	}
 </style>

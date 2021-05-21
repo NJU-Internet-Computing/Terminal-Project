@@ -68,9 +68,6 @@
 		},//end of data		
 		
 		computed: {
-			animDest(){
-				return -this.offsetWidth * (this.currentIndex-1) ;
-			},//end of animDest(currentIndex, offsetWidth)
 		},//end of computed
 		
 		watch: {
@@ -82,6 +79,8 @@
 			currentItem(newVal, oldVal){
 				console.log("in watch: currentItem")
 				console.log("newVal " + newVal) ;
+				this.offsetCurrentItem = newVal ;
+				this.slideAnim() ;
 				// this.setCurrentItem(newVal) ;
 				// this.initAnim() ;
 			}
@@ -99,7 +98,7 @@
 			wx.getSystemInfo({
 				success(res) {
 					w = Math.floor(80 * res.windowWidth / 750 ) ;
-					h = Math.floor(102 * res.windowWidth / 750 ) ;
+					h = Math.floor(104 * res.windowWidth / 750 ) ;
 				}
 			})
 			this.offsetWidth = w ;
@@ -173,7 +172,7 @@
 		border-top: 4rpx solid #3F536E;
 		border-bottom: 4rpx solid #3F536E;
 		
-		height: 100rpx;
+		height: 108rpx;
 		line-height: 100rpx;
 		width: 720rpx;
 		text-align: center;
@@ -184,11 +183,12 @@
 		display: flex;
 		justify-content: center;		
 		width: 720rpx;
+		/* background-color: #E0E6FE; */
 	}
 	.indicator{
 		width: 80rpx;
-		height: 100rpx;
-		border: 8rpx solid #007AFF ;
+		height: 110rpx;
+		border: 10rpx solid #B3AED7 ;
 	}
 	
 </style>

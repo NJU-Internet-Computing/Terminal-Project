@@ -122,7 +122,7 @@
 			},//end of selfCurrentState			
 			
 			clickCell(){
-				if(this.disableFlag) return ;
+				if(this.disableFlag)
 				this.selected = true ;
 				this.mutateSelectedCellInfo({
 					row: this.cellRow,
@@ -144,11 +144,13 @@
 	.cell{
 		width:76rpx ;
 		height:76rpx;
-		border: 2rpx solid #808080 ;
+		border: 2rpx solid #A088A0 ;
+		color: #A088A0;
 	}
 	.selectedCell{
 		border-style: outset;
-		background-color: #A0A0A0;
+		color: #FFFFFF;
+		background-color: #ba98ca;
 	}
 	.cellContent{
 		line-height: 76rpx;
@@ -156,10 +158,11 @@
 		
 		font-size: 56rpx;
 		/* color: #FFFFFF;*/
-		color: #404040;
+		
 	}
 	.disable{
-		color: #08caff ;
+		color: #6A98CA ;
+		opacity: .7;
 	}
 	
 	.display{

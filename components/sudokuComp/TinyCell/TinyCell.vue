@@ -52,9 +52,11 @@
 		line-height: 22rpx;
 		text-align: center;
 		font-size: 22rpx;
-		color: #aaaaaa;
+		/* font-weight: 700; */
+		color: #405878;
 	}
 	.selectedFlag{
 		color: #FFFFFF;
+		font-weight: bold;
 	}
 </style>

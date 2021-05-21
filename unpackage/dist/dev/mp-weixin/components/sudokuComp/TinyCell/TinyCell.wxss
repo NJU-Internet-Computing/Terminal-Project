@@ -1,0 +1,15 @@
+
+.tinyCell{
+	height:24rpx;
+	width:24rpx;
+	line-height: 22rpx;
+	text-align: center;
+	font-size: 22rpx;
+	/* font-weight: 700; */
+	color: #405878;
+}
+.selectedFlag{
+	color: #FFFFFF;
+	font-weight: bold;
+}
+

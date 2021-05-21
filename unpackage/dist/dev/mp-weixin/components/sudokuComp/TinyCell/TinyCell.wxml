@@ -1,0 +1,1 @@
+<view class="{{['tinyCell',(selectedFlag)?'selectedFlag':'']}}">{{''+offsetDisplay+''}}</view>

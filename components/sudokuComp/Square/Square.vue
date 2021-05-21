@@ -68,7 +68,7 @@
 	.square{
 		width: 236rpx;
 		height: 236rpx;
-		border: 4rpx solid #333333 ;
+		border: 4rpx solid #405878 ;
 		display: flex;
 		flex-direction: column;
 		

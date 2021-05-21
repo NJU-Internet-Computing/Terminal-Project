@@ -8,7 +8,7 @@
 			<text class="title">{{title}}</text>
 		</view>
 	
-		<u-button open-type="default"  ripple  ripple-bg-color="#9eeaf9" @click="navigate2">
+		<u-button open-type="default"  ripple  ripple-bg-color="#E0E6FE" @click="navigate2">
 			调试用
 			
 		</u-button>
