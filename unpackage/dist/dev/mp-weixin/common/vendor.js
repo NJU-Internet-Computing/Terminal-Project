@@ -9281,10 +9281,14 @@ var moduleSudokuComp = {
       //the player change this state
       currentSudokuState: [], //end of currentSudokuState
 
-      selectedCellRow: 0,
-      selectedCellCol: 0,
-      selectedCellCurrentNumber: 0,
-      selectedCellDisableFlag: true };},
+      selectedCellInfo: {
+        row: 0,
+        col: 0,
+        currentNumber: 0,
+        disableFlag: true,
+        from_comp: "" } };},
+
+
   // end of state,
 
   mutations: (_mutations = {}, _defineProperty(_mutations,
@@ -9293,21 +9297,18 @@ var moduleSudokuComp = {
 
 
   _sudokuCompService.default.mutateSelectedCellInfo, function (state, payload) {
-    state.selectedCellRow = payload.row;
-    state.selectedCellCol = payload.col;
-    state.selectedCellCurrentNumber = payload.currentNumber;
-    state.selectedCellDisableFlag = payload.disableFlag;
-    console.log("vueX: ");
-    console.log(state.selectedCellCurrentNumber + " " + state.selectedCellDisableFlag);
+    console.log("Vuex mutation selectedCellInfo");
+    console.log(payload);
+    state.selectedCellInfo = payload;
   }), _defineProperty(_mutations,
 
   _sudokuCompService.default.mutateSelectedCellCurrentNumber, function (state, payload) {
 
-    var row = state.selectedCellRow;
-    var col = state.selectedCellCol;
+    var row = state.selectedCellInfo.row;
+    var col = state.selectedCellInfo.col;
 
-    state.selectedCellCurrentNumber = payload.currentNumber;
-    state.currentSudokuState[row][col] = state.selectedCellCurrentNumber;
+    state.selectedCellInfo.currentNumber = payload.currentNumber;
+    state.currentSudokuState[row][col] = state.selectedCellInfo.currentNumber;
     // console.log(state.currentSudokuState[row][col]) ;
   }), _defineProperty(_mutations,
 
@@ -9396,7 +9397,10 @@ var moduleSudokuComp = {
       };} }, _defineProperty(_getters,
 
   _sudokuCompService.default.cellNumberToBeSelect, function (state, getters) {
-    return getters.screenNumber(state.origSudokuState, state.selectedCellRow, state.selectedCellCol);
+    return getters.screenNumber(
+    state.origSudokuState,
+    state.selectedCellInfo.row,
+    state.selectedCellInfo.col);
     // return [0, 1, 2, 3, 4] ;
   }), _defineProperty(_getters,
 
@@ -9404,16 +9408,20 @@ var moduleSudokuComp = {
 
 
 
-  _sudokuCompService.default.selectedCell, function (state) {
+  _sudokuCompService.default.selectedCellCoordinate, function (state) {
     return {
-      selectedCellRow: state.selectedCellRow,
-      selectedCellCol: state.selectedCellCol,
-      selectedCellDisableFlag: state.selectedCellDisableFlag };
+      selectedCellRow: state.selectedCellInfo.row,
+      selectedCellCol: state.selectedCellInfo.col,
+      from_comp: state.selectedCellInfo.from_comp };
 
   }), _defineProperty(_getters,
 
+  _sudokuCompService.default.selectedCellInfo, function (state) {
+    return state.selectedCellInfo;
+  }), _defineProperty(_getters,
+
   _sudokuCompService.default.selectedCellCurrentNumber, function (state) {
-    return state.selectedCellCurrentNumber;
+    return state.selectedCellInfo.currentNumber;
   }), _defineProperty(_getters,
 
   _sudokuCompService.default.cellCurrentState, function (state, getters) {return function (row, col) {
@@ -9425,7 +9433,7 @@ var moduleSudokuComp = {
       return getters.screenNumber(state.currentSudokuState, row, col);
     };}), _defineProperty(_getters,
 
-  _sudokuCompService.default.selectedCellDisableFlag, function (state) {return state.selectedCellDisableFlag;}), _defineProperty(_getters,
+  _sudokuCompService.default.selectedCellDisableFlag, function (state) {return state.selectedCellInfo.disableFlag;}), _defineProperty(_getters,
   _sudokuCompService.default.gameMode, function (state) {return state.gameMode;}), _getters)
   //end of getters
 };var _default =
@@ -9448,7 +9456,8 @@ var mutateSelectedCellCurrentNumber = 'mutateSelectedCellCurrentNumber';
 //getters
 var cellNumberToBeSelect = 'cellNumberToBeSelect';
 // const cellNumberToBeDisplay = 'cellNumberToBeDisplay' ;
-var selectedCell = 'selectedCell';
+var selectedCellCoordinate = 'selectedCellCoordinate';
+var selectedCellInfo = 'selectedCellInfo';
 var selectedCellCurrentNumber = 'selectedCellCurrentNumber';
 var cellCurrentState = 'cellCurrentState';
 var cellNum2BDisplay = 'cellNum2BDisplay';
@@ -9464,7 +9473,8 @@ var gameMode = 'gameMode';var _default =
   //getters
   cellNumberToBeSelect: cellNumberToBeSelect,
   // cellNumberToBeDisplay,
-  selectedCell: selectedCell,
+  selectedCellCoordinate: selectedCellCoordinate,
+  selectedCellInfo: selectedCellInfo,
   selectedCellCurrentNumber: selectedCellCurrentNumber,
   cellCurrentState: cellCurrentState,
   cellNum2BDisplay: cellNum2BDisplay,
@@ -11917,6 +11927,168 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   topTips: 975,
   sticky: 970,
   indexListSticky: 965 };exports.default = _default;
+
+/***/ }),
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */
+/*!***********************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/components/sudokuComp/stack.js ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  array: [],
+  maxSize: 100,
+  validTopPtr: 0,
+  pointer: 0,
+
+  push: function push(obj) {
+    // console.log(obj)
+    if (this.pointer >= this.maxSize) {
+      console.log("stack full");
+      return;
+    }
+
+    if (this.pointer === this.array.length) {
+      this.array.push(obj);
+    } else {
+      this.array[this.pointer] = obj;
+    }
+
+    this.pointer++;
+    this.validTopPtr = this.pointer;
+
+  }, //end of push
+
+  pop: function pop() {
+    if (this.pointer === 0) {
+      console.log("stack empty");
+      return;
+    }
+    var result = null;
+
+    if (this.pointer === this.array.length) {
+      result = this.array.pop();
+    } else {
+      result = this.array[this.pointer - 1];
+    }
+
+    this.pointer--;
+    this.validTopPtr = this.pointer;
+    return result;
+  }, //end of pop
+
+  revoke: function revoke() {
+    if (this.pointer === 1) {
+      console.log("no more revoke");
+      return null;
+    }
+
+    this.pointer--;
+    return this.array[this.pointer - 1];
+  }, //end of revoke
+
+  withdraw: function withdraw() {
+    if (this.pointer === this.validTopPtr) {
+      console.log("no more withdraw");
+      return null;
+    }
+    this.pointer++;
+    return this.array[this.pointer - 1];
+  }, //end of withdraw
+
+  isEmpty: function isEmpty() {return this.pointer === 0;},
+  isFull: function isFull() {return this.pointer >= this.maxSize;} };exports.default = _default;
 
 /***/ })
 ]]);

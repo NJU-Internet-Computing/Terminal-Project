@@ -4,24 +4,61 @@
 		
 		<!-- <view class="view">try slide the following NumSelector</view> -->
 		<!-- <button @click="showNumSelector">switch</button> -->
+		<view class="operations">
+			<u-button 
+				open-type="default"  
+				ripple  
+				ripple-bg-color="#9eeaf9" 
+				@click="revoke"
+			>
+				撤销			
+			</u-button>
+			<u-button 
+				open-type="default"  
+				ripple  
+				ripple-bg-color="#9eeaf9" 
+				@click="getSelectedNumber(0)"
+			>
+				清空
+			</u-button>
+			<u-button 
+				open-type="default"  
+				ripple  
+				ripple-bg-color="#9eeaf9" 
+				@click="withdraw"
+			>
+				撤回	
+			</u-button>
+		</view>
 		
-		<NumSelector
+<!-- 		<NumSelector
 			:disableFlag="!selectedCellDisableFlag"
 			:list2BSelect="offset2BSelect" 
 			:currentItem="currNum"
 			id="NumSelector"
 			@selected="getSelectedNumber"
 		>
-		</NumSelector>
+		</NumSelector> -->
+		
+		<PlainNumSelcotr
+			:disableFlag="selectedCellDisableFlag"
+			:list2BSelect="offset2BSelect" 
+			:currentItem="currNum"
+			id="NumSelector"
+			@selected="getSelectedNumber"
+			v-show="showSelector">			
+		</PlainNumSelcotr>
 		
 		
 	</view>
 </template>
 
 <script>
-	import {mapGetters, mapMutations, mapState} from 'vuex' ;
+	import {mapGetters, mapMutations} from 'vuex' ;
 	import Board from './Board/Board.vue' ;
 	import NumSelector from './NumSelector/NumSelector.vue' ;
+	import PlainNumSelcotr from './PlainNumSelector/PlainNumSelector.vue' ;
+	import stack from './stack.js' ;
 	
 	export default{
 		props:{
@@ -43,13 +80,16 @@
 				show: true,
 				offset2BSelect: Array, 
 				currNum: Number,
+				stack,
+				showSelector: false,
 			}
 		},//end of data
 		
 		computed:{
 			...mapGetters([
 				'cellNumberToBeSelect', 
-				'selectedCell', 
+				'selectedCellCoordinate',
+				'selectedCellInfo',
 				'selectedCellCurrentNumber',
 				'selectedCellDisableFlag'
 			]),//end of mapGetters
@@ -57,8 +97,14 @@
 		},//end of computed
 		
 		watch:{
-			selectedCell(newVal, oldVal){
-				this.getSelectedCellInfo() ;
+			selectedCellInfo: {
+				handler(newVal, oldVal){
+					this.showSelector = true ;
+					if(newVal.from_comp === "Cell")	
+						this.stack.push(JSON.parse(JSON.stringify(newVal))) ;					
+					
+					this.getSelectedCellInfo() ;
+				},
 			},//end of selectedCell		
 			
 		},//end of watch
@@ -71,10 +117,31 @@
 			this.getSelectedCellInfo() ;
 		},//end of beforeMount()		
 		
-		mounted(){			
+		mounted(){
+			console.log("hook: mounted: ")
+			
 		},//end of mounted()
 		
 		methods:{			
+			
+			revoke(){
+				let temp = this.stack.revoke() ;
+				if(!temp) return ;
+				temp.from_comp = "SudokuComp",				
+				this.mutateSelectedCellInfo(temp) ;
+				this.setCurrNum(this.selectedCellCurrentNumber) ;
+			},//end of revoke()
+			
+			withdraw(){
+				console.log("withdraw") ;				
+				let temp = this.stack.withdraw() ;
+				if(!temp) return ;
+				temp.from_comp = "SudokuComp",
+				this.mutateSelectedCellInfo(temp) ;
+				this.setCurrNum(this.selectedCellCurrentNumber) ;
+			},//end of withdraw()
+			
+			
 			showNumSelector(){
 				this.show = !this.show ;
 			},
@@ -82,22 +149,28 @@
 			...mapMutations([
 				'initSudokuState',
 				'mutateSelectedCellCurrentNumber',
+				'mutateSelectedCellInfo',
 			]),//end of mapMutations
 			
 			getSelectedNumber(selectedNumber){
-				let num = 0;
-				if((selectedNumber >= "1") && (selectedNumber <= "9")) 
-					num = Number(selectedNumber) ;
+				console.log(selectedNumber) ;
+				// let num = 0;
+				// if((selectedNumber >= "1") && (selectedNumber <= "9")) 
+				// 	num = Number(selectedNumber) ;
+				let num = selectedNumber ;
 				this.mutateSelectedCellCurrentNumber({
 					currentNumber: num,
-				})
-				// console.log("mutate num: " + num) ;
+				}) ;				
+				this.setCurrNum(num) ;
+				this.stack.push(JSON.parse(JSON.stringify(this.selectedCellInfo))) ;	
 			},
 			
 			getSelectedCellInfo(){
-				console.log("2Bselect: " + this.cellNumberToBeSelect) ;
 				this.setOffset2BSelect(this.cellNumberToBeSelect) ;
 				this.setCurrNum(this.selectedCellCurrentNumber) ;
+				console.log("in SudokuComp  func:getSelectedCellInfo")
+				console.log(this.offset2BSelect) ;
+				console.log(this.currNum) ;
 			},//end of getSelectedCellInfo
 			
 			setNumByRule(val){
@@ -106,13 +179,15 @@
 			},//end of setNumbRule
 			
 			setCurrNum(newVal){
-				this.currNum = this.setNumByRule(newVal) ;
+				this.currNum = newVal ;
+				// this.currNum = this.setNumByRule(newVal) ;
 			},//end of newVal
 			
-			setOffset2BSelect(newVal){				
-				this.offset2BSelect = [] ;
+			setOffset2BSelect(newVal){
+				this.offset2BSelect = [] ;				
 				for(var i = 0; i < newVal.length; i++){
-					this.offset2BSelect.push(this.setNumByRule(newVal[i])) ;
+					// this.offset2BSelect.push(this.setNumByRule(newVal[i])) ;
+					this.offset2BSelect.push(newVal[i]) ;
 				}		
 			}, // end of setOffset2BSelect(newVal)
 			
@@ -122,6 +197,7 @@
 		components:{
 			Board, 
 			NumSelector,
+			PlainNumSelcotr,
 		},//end of components
 	}
 </script>
@@ -131,5 +207,10 @@
 		text-align: center;
 		margin: 0 auto ;
 	}
-	
+	.operations{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		margin: 10rpx 10rpx auto;
+	}
 </style>

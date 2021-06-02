@@ -93,6 +93,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uButton: function() {
+      return __webpack_require__.e(/*! import() | node-modules/uview-ui/components/u-button/u-button */ "node-modules/uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! uview-ui/components/u-button/u-button.vue */ 74))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -151,9 +174,46 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var Board = function Board() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/Board/Board */ "components/sudokuComp/Board/Board").then((function () {return resolve(__webpack_require__(/*! ./Board/Board.vue */ 81));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var NumSelector = function NumSelector() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/NumSelector/NumSelector */ "components/sudokuComp/NumSelector/NumSelector").then((function () {return resolve(__webpack_require__(/*! ./NumSelector/NumSelector.vue */ 88));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _vuex = __webpack_require__(/*! vuex */ 12);
+
+
+
+var _stack = _interopRequireDefault(__webpack_require__(/*! ./stack.js */ 133));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var Board = function Board() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/Board/Board */ "components/sudokuComp/Board/Board").then((function () {return resolve(__webpack_require__(/*! ./Board/Board.vue */ 81));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var NumSelector = function NumSelector() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/NumSelector/NumSelector */ "components/sudokuComp/NumSelector/NumSelector").then((function () {return resolve(__webpack_require__(/*! ./NumSelector/NumSelector.vue */ 88));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PlainNumSelcotr = function PlainNumSelcotr() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/PlainNumSelector/PlainNumSelector */ "components/sudokuComp/PlainNumSelector/PlainNumSelector").then((function () {return resolve(__webpack_require__(/*! ./PlainNumSelector/PlainNumSelector.vue */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
   props: {
@@ -174,14 +234,17 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
     return {
       show: true,
       offset2BSelect: Array,
-      currNum: Number };
+      currNum: Number,
+      stack: _stack.default,
+      showSelector: false };
 
   }, //end of data
 
   computed: _objectSpread({},
   (0, _vuex.mapGetters)([
   'cellNumberToBeSelect',
-  'selectedCell',
+  'selectedCellCoordinate',
+  'selectedCellInfo',
   'selectedCellCurrentNumber',
   'selectedCellDisableFlag'])),
 
@@ -189,9 +252,15 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
   //end of computed
 
   watch: {
-    selectedCell: function selectedCell(newVal, oldVal) {
-      this.getSelectedCellInfo();
-    } //end of selectedCell		
+    selectedCellInfo: {
+      handler: function handler(newVal, oldVal) {
+        this.showSelector = true;
+        if (newVal.from_comp === "Cell")
+        this.stack.push(JSON.parse(JSON.stringify(newVal)));
+
+        this.getSelectedCellInfo();
+      } }
+    //end of selectedCell		
   },
   //end of watch
 
@@ -204,32 +273,59 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
   }, //end of beforeMount()		
 
   mounted: function mounted() {
+    console.log("hook: mounted: ");
+
   }, //end of mounted()
 
   methods: _objectSpread(_objectSpread({
+
+    revoke: function revoke() {
+      var temp = this.stack.revoke();
+      if (!temp) return;
+      temp.from_comp = "SudokuComp",
+      this.mutateSelectedCellInfo(temp);
+      this.setCurrNum(this.selectedCellCurrentNumber);
+    }, //end of revoke()
+
+    withdraw: function withdraw() {
+      console.log("withdraw");
+      var temp = this.stack.withdraw();
+      if (!temp) return;
+      temp.from_comp = "SudokuComp",
+      this.mutateSelectedCellInfo(temp);
+      this.setCurrNum(this.selectedCellCurrentNumber);
+    }, //end of withdraw()
+
+
     showNumSelector: function showNumSelector() {
       this.show = !this.show;
     } },
 
   (0, _vuex.mapMutations)([
   'initSudokuState',
-  'mutateSelectedCellCurrentNumber'])), {}, {
+  'mutateSelectedCellCurrentNumber',
+  'mutateSelectedCellInfo'])), {}, {
     //end of mapMutations
 
     getSelectedNumber: function getSelectedNumber(selectedNumber) {
-      var num = 0;
-      if (selectedNumber >= "1" && selectedNumber <= "9")
-      num = Number(selectedNumber);
+      console.log(selectedNumber);
+      // let num = 0;
+      // if((selectedNumber >= "1") && (selectedNumber <= "9")) 
+      // 	num = Number(selectedNumber) ;
+      var num = selectedNumber;
       this.mutateSelectedCellCurrentNumber({
         currentNumber: num });
 
-      // console.log("mutate num: " + num) ;
+      this.setCurrNum(num);
+      this.stack.push(JSON.parse(JSON.stringify(this.selectedCellInfo)));
     },
 
     getSelectedCellInfo: function getSelectedCellInfo() {
-      console.log("2Bselect: " + this.cellNumberToBeSelect);
       this.setOffset2BSelect(this.cellNumberToBeSelect);
       this.setCurrNum(this.selectedCellCurrentNumber);
+      console.log("in SudokuComp  func:getSelectedCellInfo");
+      console.log(this.offset2BSelect);
+      console.log(this.currNum);
     }, //end of getSelectedCellInfo
 
     setNumByRule: function setNumByRule(val) {
@@ -238,13 +334,15 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
     }, //end of setNumbRule
 
     setCurrNum: function setCurrNum(newVal) {
-      this.currNum = this.setNumByRule(newVal);
+      this.currNum = newVal;
+      // this.currNum = this.setNumByRule(newVal) ;
     }, //end of newVal
 
     setOffset2BSelect: function setOffset2BSelect(newVal) {
       this.offset2BSelect = [];
       for (var i = 0; i < newVal.length; i++) {
-        this.offset2BSelect.push(this.setNumByRule(newVal[i]));
+        // this.offset2BSelect.push(this.setNumByRule(newVal[i])) ;
+        this.offset2BSelect.push(newVal[i]);
       }
     } // end of setOffset2BSelect(newVal)
   }),
@@ -253,7 +351,8 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
 
   components: {
     Board: Board,
-    NumSelector: NumSelector }
+    NumSelector: NumSelector,
+    PlainNumSelcotr: PlainNumSelcotr }
   //end of components
 };exports.default = _default;
 

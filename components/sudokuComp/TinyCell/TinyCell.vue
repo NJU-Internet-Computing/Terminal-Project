@@ -1,5 +1,5 @@
 <template>
-	<view class="tinyCell">
+	<view class="tinyCell" :class="{'selectedFlag': selectedFlag}">
 		{{offsetDisplay}}
 	</view>
 </template>
@@ -7,7 +7,8 @@
 <script>
 	export default{	
 		props: {
-			display: ""
+			display: "",
+			selectedFlag: Boolean,
 		},//end of props		
 		
 		data(){
@@ -33,7 +34,7 @@
 		},//end of beforeMounted
 		
 		mounted(){
-			// console.log(this.offsetDisplay) ;
+			
 		},//end of mounted()	
 		
 		methods:{			
@@ -51,6 +52,11 @@
 		line-height: 22rpx;
 		text-align: center;
 		font-size: 22rpx;
-		color: #aaaaaa;
+		/* font-weight: 700; */
+		color: #405878;
+	}
+	.selectedFlag{
+		color: #FFFFFF;
+		font-weight: bold;
 	}
 </style>

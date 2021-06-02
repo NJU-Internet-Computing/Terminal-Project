@@ -1,5 +1,5 @@
 <template>
-	<view class="cell" @click="clickCell">
+	<view class="cell" :class="{'selectedCell': selected}" @click="clickCell" >
 		<view v-show="!emptyFlag" 
 			class="cellContent" 
 			:class="{'disable': disableFlag}"
@@ -16,7 +16,8 @@
 				<TinyCell 
 					v-for="(col, colIndex) in row" 
 					:key="colIndex" 
-					:display="offset2BDisplay[col]">				
+					:display="offset2BDisplay[col]"
+					:selectedFlag="selected">				
 				</TinyCell>
 			</view>
 		</view>
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-	import {mapState, mapGetters, mapMutations} from 'vuex' ;
+	import {mapGetters, mapMutations} from 'vuex' ;
 	import TinyCell from '../TinyCell/TinyCell.vue' ;
 	export default{	
 		props:{
@@ -60,22 +61,23 @@
 				'cellNum2BDisplay',
 				'cellCurrentState',
 				'gameMode',
-				'selectedCell',
+				'selectedCellCoordinate',
 				'selectedCellCurrentNumber',
 			]),//end of mapGetters			
 			
 		},//end of computed
 		
 		watch:{
-			selectedCell(newVal, oldVal){
-				if((newVal.selectedCellRow === this.cellRow) && (newVal.selectedCellCol === this.cellCol)) return ;
-				this.selected = false ;
+			selectedCellCoordinate(newVal, oldVal){
+				if((newVal.selectedCellRow === this.cellRow) && (newVal.selectedCellCol === this.cellCol)) 
+					this.selected = true ;//when setBack, will change selectedCell without click the cell, so it's this sentance to set selected property correctly
+				
+				else this.selected = false ;
 			},//end of selectedCell
 			
 			selectedCellCurrentNumber(newVal, oldVal){
 				this.setOffset2BDisplay(this.cellNum2BDisplay(this.cellRow, this.cellCol)) ;
 				if(!this.selected) return ;
-				console.log("cell have new Val " + newVal) ;
 				this.currentNumber = newVal ;
 				
 				if(this.currentNumber === 0) this.emptyFlag = true ;
@@ -94,18 +96,16 @@
 				this.disableFlag = true ;
 				this.emptyFlag = false ;
 			}
-			// console.log(`(${this.cellRow},${this.cellCol})`) ;
-			// console.log(this.currentNumber) ;
-			// console.log(this.offset2BDisplay) ;
-			// console.log("disable: "+this.disableFlag) ;
-			// console.log("empty: " + this.emptyFlag) ;
 		},//end of beforeMount	
 		
 		mounted(){
-			// console.log("gameMode: " + this.gameMode) ;
 		},//end of mounted()
 		
-		methods:{
+		methods:{			
+			...mapMutations([
+				'mutateSelectedCellInfo',
+			]),//end of mapMutations
+			
 			setOffset2BDisplay(val){
 				this.offset2BDisplay = [] ;
 				for(let i = 0; i < 10; i++){
@@ -115,25 +115,21 @@
 					this.offset2BDisplay[item] = item.toString() ;
 				})
 				this.offset2BDisplay.shift() ;
-				console.log(this.cellRow + " " + this.cellCol + " " + this.offset2BDisplay) ;
 			},//end of setOffset2BDisplay(val)
 			
 			selfState(){
 				return this.cellCurrentState(this.cellRow, this.cellCol) ;
-			},//end of selfCurrentState
-			
-			...mapMutations([
-				'mutateSelectedCellInfo',
-			]),//end of mapMutations
+			},//end of selfCurrentState			
 			
 			clickCell(){
-				console.log(`cell ${this.cellRow}, ${this.cellCol} : ${this.currentNumber}`);
+				if(this.disableFlag)
 				this.selected = true ;
 				this.mutateSelectedCellInfo({
 					row: this.cellRow,
 					col: this.cellCol,
 					currentNumber: this.currentNumber,
 					disableFlag: this.disableFlag,
+					from_comp: "Cell",
 				}) ;
 			},//end of clickCell
 		},//end of methods
@@ -148,17 +144,25 @@
 	.cell{
 		width:76rpx ;
 		height:76rpx;
-		border: 2rpx solid #808080 ;
+		border: 2rpx solid #A088A0 ;
+		color: #A088A0;
+	}
+	.selectedCell{
+		border-style: outset;
+		color: #FFFFFF;
+		background-color: #ba98ca;
 	}
 	.cellContent{
 		line-height: 76rpx;
 		text-align: center;
 		
 		font-size: 56rpx;
-		color: #FFFFFF;
+		/* color: #FFFFFF;*/
+		
 	}
 	.disable{
-		color: #08caff ;
+		color: #6A98CA ;
+		opacity: .7;
 	}
 	
 	.display{

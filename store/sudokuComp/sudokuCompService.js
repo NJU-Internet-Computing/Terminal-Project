@@ -6,7 +6,8 @@ const mutateSelectedCellCurrentNumber = 'mutateSelectedCellCurrentNumber' ;
 //getters
 const cellNumberToBeSelect = 'cellNumberToBeSelect' ;
 // const cellNumberToBeDisplay = 'cellNumberToBeDisplay' ;
-const selectedCell = 'selectedCell' ;
+const selectedCellCoordinate = 'selectedCellCoordinate' ;
+const selectedCellInfo = 'selectedCellInfo' ;
 const selectedCellCurrentNumber = 'selectedCellCurrentNumber' ;
 const cellCurrentState = 'cellCurrentState' ;
 const cellNum2BDisplay = 'cellNum2BDisplay' ;
@@ -22,7 +23,8 @@ export default {
 	//getters
 	cellNumberToBeSelect,
 	// cellNumberToBeDisplay,
-	selectedCell,
+	selectedCellCoordinate,
+	selectedCellInfo,
 	selectedCellCurrentNumber,
 	cellCurrentState,
 	cellNum2BDisplay,

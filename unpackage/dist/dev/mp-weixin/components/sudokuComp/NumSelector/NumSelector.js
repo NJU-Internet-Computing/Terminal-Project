@@ -226,6 +226,9 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _toConsumableArray(arr)
   watch: {
     list2BSelect: function list2BSelect() {
       this.initAnim();
+    },
+    currentItem: function currentItem() {
+      this.initAnim();
     } },
   //end of watch		
 

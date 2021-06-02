@@ -24,43 +24,14 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.hy-selector {
-  overflow: hidden;
-  position: relative;
-  width: 750rpx;
-  height: 150rpx;
-  line-height: 60rpx;
-  margin: 20rpx 0rpx auto;
-  background-color: #c8c9cc;
-  opacity: 0.5;
-  border-top: 4rpx solid #3F536E;
-  border-bottom: 4rpx solid #3F536E;
+.PlainNumSelectorItem {
+  font-size: 80rpx;
+  font-weight: 700;
+  color: #405878;
+  width: 80rpx;
 }
-.selector {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-          flex-direction: row;
-  /* justify-content: space-around ; */
-  justify-items: baseline;
-  font-size: 60rpx;
-  text-align: center;
-  /* color: #000000; */
-  /* color: #FFFFFF; */
-}
-/* 
-.selected{
-	background-color: #007AFF;
-} */
-.indicator {
-  position: relative;
-  left: 360rpx;
-  margin: 0 auto;
-  text-align: center;
-  z-index: 20;
+.disable {
+  color: #A088A0;
+  opacity: .3;
 }
 

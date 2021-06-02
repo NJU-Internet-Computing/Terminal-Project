@@ -88,6 +88,9 @@
 			list2BSelect(){
 				this.initAnim() ;
 			},
+			currentItem(){
+				this.initAnim() ;
+			},
 		},//end of watch		
 		
 		methods:{				
@@ -205,7 +208,7 @@
 		width: 750rpx;
 		height: 150rpx ;
 		line-height: 60rpx;
-		margin: 40rpx 0rpx auto ;		
+		margin: 20rpx 0rpx auto ;		
 		background-color: $u-type-info-disabled;
 		opacity: 0.5;
 		border-top: 4rpx solid #3F536E;

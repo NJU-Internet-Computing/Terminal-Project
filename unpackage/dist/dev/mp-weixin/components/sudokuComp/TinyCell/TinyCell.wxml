@@ -1,1 +1,1 @@
-<view class="tinyCell">{{''+offsetDisplay+''}}</view>
+<view class="{{['tinyCell',(selectedFlag)?'selectedFlag':'']}}">{{''+offsetDisplay+''}}</view>

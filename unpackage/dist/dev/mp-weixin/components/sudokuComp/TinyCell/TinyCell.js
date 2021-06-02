@@ -123,7 +123,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   props: {
-    display: "" },
+    display: "",
+    selectedFlag: Boolean },
   //end of props		
 
   data: function data() {
@@ -149,7 +150,7 @@ var _default =
   }, //end of beforeMounted
 
   mounted: function mounted() {
-    // console.log(this.offsetDisplay) ;
+
   }, //end of mounted()	
 
   methods: {},

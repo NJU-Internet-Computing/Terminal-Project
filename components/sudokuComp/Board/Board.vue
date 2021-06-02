@@ -66,17 +66,10 @@
 		mounted(){			
 		},//end of mounted()
 		
-		methods:{			
-			clickSquare(){
-			},
+		methods:{	
 			getKey(row, col){
 				return row*3+col ;
 			},
-			click(e, i){
-				console.log(i) ;
-				this.dest+=100 ;
-				this.setTransform(this.dest, i) ;
-			},//
 			setTransform(dest, i){
 				this.Animation.translateX(dest).step() ;
 				this.animate[i] = this.Animation.export() ;
@@ -100,7 +93,7 @@
 		justify-content: space-evenly ;
 		width: 708rpx;
 		height: 708rpx;
-		background-image: url("https://software-engineering-and-computing2-picturebed.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%BD%91%E9%A1%B9%E7%9B%AE/sudokuComp/u%3D2271332169%2C204668968%26fm%3D15%26fmt%3Dauto%26gp%3D0.png");
+		/* background-image: url("https://software-engineering-and-computing2-picturebed.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%BD%91%E9%A1%B9%E7%9B%AE/sudokuComp/u%3D2271332169%2C204668968%26fm%3D15%26fmt%3Dauto%26gp%3D0.png"); */
 	}
 	
 	.squareRow{

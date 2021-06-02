@@ -145,6 +145,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+
 var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var TinyCell = function TinyCell() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/TinyCell/TinyCell */ "components/sudokuComp/TinyCell/TinyCell").then((function () {return resolve(__webpack_require__(/*! ../TinyCell/TinyCell.vue */ 123));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
@@ -176,22 +177,23 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
   'cellNum2BDisplay',
   'cellCurrentState',
   'gameMode',
-  'selectedCell',
+  'selectedCellCoordinate',
   'selectedCellCurrentNumber'])),
 
 
   //end of computed
 
   watch: {
-    selectedCell: function selectedCell(newVal, oldVal) {
-      if (newVal.selectedCellRow === this.cellRow && newVal.selectedCellCol === this.cellCol) return;
-      this.selected = false;
+    selectedCellCoordinate: function selectedCellCoordinate(newVal, oldVal) {
+      if (newVal.selectedCellRow === this.cellRow && newVal.selectedCellCol === this.cellCol)
+      this.selected = true; //when setBack, will change selectedCell without click the cell, so it's this sentance to set selected property correctly
+      else
+        this.selected = false;
     }, //end of selectedCell
 
     selectedCellCurrentNumber: function selectedCellCurrentNumber(newVal, oldVal) {
       this.setOffset2BDisplay(this.cellNum2BDisplay(this.cellRow, this.cellCol));
       if (!this.selected) return;
-      console.log("cell have new Val " + newVal);
       this.currentNumber = newVal;
 
       if (this.currentNumber === 0) this.emptyFlag = true;else
@@ -210,18 +212,16 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
       this.disableFlag = true;
       this.emptyFlag = false;
     }
-    // console.log(`(${this.cellRow},${this.cellCol})`) ;
-    // console.log(this.currentNumber) ;
-    // console.log(this.offset2BDisplay) ;
-    // console.log("disable: "+this.disableFlag) ;
-    // console.log("empty: " + this.emptyFlag) ;
   }, //end of beforeMount	
 
   mounted: function mounted() {
-    // console.log("gameMode: " + this.gameMode) ;
   }, //end of mounted()
 
-  methods: _objectSpread(_objectSpread({
+  methods: _objectSpread(_objectSpread({},
+  (0, _vuex.mapMutations)([
+  'mutateSelectedCellInfo'])), {}, {
+    //end of mapMutations
+
     setOffset2BDisplay: function setOffset2BDisplay(val) {var _this = this;
       this.offset2BDisplay = [];
       for (var i = 0; i < 10; i++) {
@@ -231,25 +231,21 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
         _this.offset2BDisplay[item] = item.toString();
       });
       this.offset2BDisplay.shift();
-      console.log(this.cellRow + " " + this.cellCol + " " + this.offset2BDisplay);
     }, //end of setOffset2BDisplay(val)
 
     selfState: function selfState() {
       return this.cellCurrentState(this.cellRow, this.cellCol);
-    } },
-
-  (0, _vuex.mapMutations)([
-  'mutateSelectedCellInfo'])), {}, {
-    //end of mapMutations
+    }, //end of selfCurrentState			
 
     clickCell: function clickCell() {
-      console.log("cell ".concat(this.cellRow, ", ").concat(this.cellCol, " : ").concat(this.currentNumber));
+      if (this.disableFlag)
       this.selected = true;
       this.mutateSelectedCellInfo({
         row: this.cellRow,
         col: this.cellCol,
         currentNumber: this.currentNumber,
-        disableFlag: this.disableFlag });
+        disableFlag: this.disableFlag,
+        from_comp: "Cell" });
 
     } //end of clickCell
   }), //end of methods
