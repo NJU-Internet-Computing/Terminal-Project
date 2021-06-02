@@ -822,7 +822,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7395,7 +7395,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7416,14 +7416,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7509,7 +7509,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7947,9 +7947,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!*********************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/pages.json ***!
-  \*********************************************************/
+/*!***************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/pages.json ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8090,9 +8090,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 11 */
-/*!*************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/store/index.js ***!
-  \*************************************************************/
+/*!*******************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/store/index.js ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8106,11 +8106,44 @@ _vue.default.use(_vuex.default); //vue的插件机制
 //Vuex.Store 构造器选项
 var store = new _vuex.default.Store({
   state: {
-    msg: "hello world" },
+    mode: "NORMAL",
+    difficulty: 1 },
 
   modules: {
-    sudokuComp: _sudokuComp.default } });var _default =
+    sudokuComp: _sudokuComp.default },
 
+  mutations: mutations,
+  actions: actions });
+
+var getters = { //实时监听state值的变化(最新状态)
+  getMode: function getMode(state) {//承载变化的mode的值
+    return state.mode;
+  },
+  getdifficulty: function getdifficulty(state) {//承载变化的难度的值
+    return state.difficulty;
+  } };
+
+var mutations = {
+  chooseMode: function chooseMode(state) {//自定义改变state初始值的方法，这里面的参数除了state之外还可以再传额外的参数(变量或对象);
+    state.mode = "PUZZLE";
+  },
+  chooseMiddle: function chooseMiddle(state) {//选择中等难度
+    state.difficulty = 2;
+  },
+  chooseHard: function chooseHard(state) {//选择困难难度
+    state.difficulty = 3;
+  } };
+
+var actions = {
+  changeMode: function changeMode(context) {//自定义触发mutations里函数的方法，context与store 实例具有相同方法和属性
+    context.commit('chooseMode');
+  },
+  changeMiddle: function changeMiddle(context) {//同上注释
+    context.commit('chooseMiddle');
+  },
+  changeHard: function changeHard(context) {//同上注释
+    context.commit('chooseHard');
+  } };var _default =
 
 store;exports.default = _default;
 
@@ -9228,9 +9261,9 @@ var index = {
 
 /***/ }),
 /* 13 */
-/*!*****************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/store/sudokuComp/sudokuComp.js ***!
-  \*****************************************************************************/
+/*!***********************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/store/sudokuComp/sudokuComp.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9400,9 +9433,9 @@ moduleSudokuComp;exports.default = _default;
 
 /***/ }),
 /* 14 */
-/*!************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/store/sudokuComp/sudokuCompService.js ***!
-  \************************************************************************************/
+/*!******************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/store/sudokuComp/sudokuCompService.js ***!
+  \******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9440,9 +9473,9 @@ var gameMode = 'gameMode';var _default =
 
 /***/ }),
 /* 15 */
-/*!*****************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/index.js ***!
-  \*****************************************************************************/
+/*!***********************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/index.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9591,9 +9624,9 @@ var install = function install(Vue) {
 
 /***/ }),
 /* 16 */
-/*!****************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/mixin/mixin.js ***!
-  \****************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/mixin/mixin.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9664,9 +9697,9 @@ var install = function install(Vue) {
 
 /***/ }),
 /* 17 */
-/*!******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/request/index.js ***!
-  \******************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/request/index.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9844,9 +9877,9 @@ new Request();exports.default = _default;
 
 /***/ }),
 /* 18 */
-/*!***********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/deepMerge.js ***!
-  \***********************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/deepMerge.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9884,9 +9917,9 @@ deepMerge;exports.default = _default;
 
 /***/ }),
 /* 19 */
-/*!***********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/deepClone.js ***!
-  \***********************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/deepClone.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9917,9 +9950,9 @@ deepClone;exports.default = _default;
 
 /***/ }),
 /* 20 */
-/*!******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/test.js ***!
-  \******************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/test.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10158,9 +10191,9 @@ function code(value) {var len = arguments.length > 1 && arguments[1] !== undefin
 
 /***/ }),
 /* 21 */
-/*!*************************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/queryParams.js ***!
-  \*************************************************************************************************/
+/*!*******************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/queryParams.js ***!
+  \*******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10226,17 +10259,17 @@ queryParams;exports.default = _default;
 
 /***/ }),
 /* 22 */
-/*!*******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/route.js ***!
-  \*******************************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/route.js ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 23));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;} /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 路由跳转方法，该方法相对于直接使用uni.xxx的好处是使用更加简单快捷
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 并且带有路由拦截功能
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   */var
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * 路由跳转方法，该方法相对于直接使用uni.xxx的好处是使用更加简单快捷
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * 并且带有路由拦截功能
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  */var
 
 Router = /*#__PURE__*/function () {
   function Router() {_classCallCheck(this, Router);
@@ -11147,9 +11180,9 @@ if (hadRuntime) {
 
 /***/ }),
 /* 26 */
-/*!************************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/timeFormat.js ***!
-  \************************************************************************************************/
+/*!******************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/timeFormat.js ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11208,9 +11241,9 @@ timeFormat;exports.default = _default;
 
 /***/ }),
 /* 27 */
-/*!**********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/timeFrom.js ***!
-  \**********************************************************************************************/
+/*!****************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/timeFrom.js ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11265,9 +11298,9 @@ timeFrom;exports.default = _default;
 
 /***/ }),
 /* 28 */
-/*!***************************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/colorGradient.js ***!
-  \***************************************************************************************************/
+/*!*********************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/colorGradient.js ***!
+  \*********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11408,9 +11441,9 @@ function colorToRgba(color) {var alpha = arguments.length > 1 && arguments[1] !=
 
 /***/ }),
 /* 29 */
-/*!******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/guid.js ***!
-  \******************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/guid.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11459,9 +11492,9 @@ guid;exports.default = _default;
 
 /***/ }),
 /* 30 */
-/*!*******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/color.js ***!
-  \*******************************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/color.js ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11506,9 +11539,9 @@ color;exports.default = _default;
 
 /***/ }),
 /* 31 */
-/*!***********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/type2icon.js ***!
-  \***********************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/type2icon.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11551,9 +11584,9 @@ type2icon;exports.default = _default;
 
 /***/ }),
 /* 32 */
-/*!*************************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/randomArray.js ***!
-  \*************************************************************************************************/
+/*!*******************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/randomArray.js ***!
+  \*******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11568,9 +11601,9 @@ randomArray;exports.default = _default;
 
 /***/ }),
 /* 33 */
-/*!*********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/addUnit.js ***!
-  \*********************************************************************************************/
+/*!***************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/addUnit.js ***!
+  \***************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11586,9 +11619,9 @@ function addUnit() {var value = arguments.length > 0 && arguments[0] !== undefin
 
 /***/ }),
 /* 34 */
-/*!********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/random.js ***!
-  \********************************************************************************************/
+/*!**************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/random.js ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11606,9 +11639,9 @@ random;exports.default = _default;
 
 /***/ }),
 /* 35 */
-/*!******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/trim.js ***!
-  \******************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/trim.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11631,9 +11664,9 @@ trim;exports.default = _default;
 
 /***/ }),
 /* 36 */
-/*!*******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/toast.js ***!
-  \*******************************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/toast.js ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11651,9 +11684,9 @@ toast;exports.default = _default;
 
 /***/ }),
 /* 37 */
-/*!***********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/getParent.js ***!
-  \***********************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/getParent.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11708,9 +11741,9 @@ function getParent(name, keys) {
 
 /***/ }),
 /* 38 */
-/*!*********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/$parent.js ***!
-  \*********************************************************************************************/
+/*!***************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/$parent.js ***!
+  \***************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11736,9 +11769,9 @@ function $parent() {var name = arguments.length > 0 && arguments[0] !== undefine
 
 /***/ }),
 /* 39 */
-/*!*****************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/sys.js ***!
-  \*****************************************************************************************/
+/*!***********************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/sys.js ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11754,9 +11787,9 @@ function sys() {
 
 /***/ }),
 /* 40 */
-/*!**********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/debounce.js ***!
-  \**********************************************************************************************/
+/*!****************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/debounce.js ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11793,9 +11826,9 @@ debounce;exports.default = _default;
 
 /***/ }),
 /* 41 */
-/*!**********************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/function/throttle.js ***!
-  \**********************************************************************************************/
+/*!****************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/function/throttle.js ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11835,9 +11868,9 @@ throttle;exports.default = _default;
 
 /***/ }),
 /* 42 */
-/*!******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/config/config.js ***!
-  \******************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/config/config.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11858,9 +11891,9 @@ var version = '1.8.3';var _default =
 
 /***/ }),
 /* 43 */
-/*!******************************************************************************************!*\
-  !*** C:/Users/Dell/Desktop/Terminal-Project/node_modules/uview-ui/libs/config/zIndex.js ***!
-  \******************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** /Users/macbookair/Downloads/Terminal-Project/node_modules/uview-ui/libs/config/zIndex.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

@@ -1,0 +1,47 @@
+
+.main{
+		background-color:#efe9d3;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		-webkit-flex-direction: column;
+		        flex-direction: column;
+		-webkit-box-pack:center;
+		-webkit-justify-content:center;
+		        justify-content:center;
+}
+.easy{
+	margin-top:160rpx;
+	margin-right:150rpx;
+	margin-left:150rpx;
+}
+.middle{
+	margin-top:100rpx; /* 相对于相邻元素的距离 */
+	margin-right:150rpx;
+	margin-left:150rpx;
+}
+.hard{
+	margin-top:100rpx; /* 相对于相邻元素的距离 */
+	margin-right:150rpx;
+	margin-left:150rpx;
+	margin-bottom: 300rpx;
+}
+.title{
+	font-family:"Times New Roman",Georgia,Serif;
+	 font-size:40px;
+	 color:#bd8577 ;
+	  float:left;
+	  font:Century Gothic;
+	  /* -webkit-box-reflect: below 10px 
+	   -webkit-linear-gradient(transparent,transparent 50%,rgba(255,25 5,255,.5));*/
+}
+.head {
+		margin-left:140rpx;
+		text-align: center;
+		  padding: 20px;
+		
+		margin-top:100rpx;
+}
+
