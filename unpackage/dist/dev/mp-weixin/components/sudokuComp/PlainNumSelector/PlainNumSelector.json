@@ -1,6 +1,6 @@
 {
+  "component": true,
   "usingComponents": {
     "plain-num-selector-item": "/components/sudokuComp/PlainNumSelector/PlainNumSelectorItem"
-  },
-  "component": true
+  }
 }

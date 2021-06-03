@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "sudoku-comp": "/components/sudokuComp/SudokuComp"
+  }
 }
