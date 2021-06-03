@@ -137,16 +137,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-
-
-
-
-
-
-
-
-
 var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var TinyCell = function TinyCell() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/TinyCell/TinyCell */ "components/sudokuComp/TinyCell/TinyCell").then((function () {return resolve(__webpack_require__(/*! ../TinyCell/TinyCell.vue */ 143));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
 
 {
   props: {
@@ -162,48 +157,96 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
 
   data: function data() {
     return {
-      tinyCells: [[0, 1, 2], [3, 4, 5], [6, 7, 8]],
-      emptyFlag: true, //cell当前为空
-      disableFlag: false, //非用户填写Cell
+      tinyCells: [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8]],
+
+      emptyFlag: true, //cell是否为空 true空，false非空
+      disableFlag: false, //用户可否填写Cell，true 不可填写 false可填写
       currentNumber: Number,
       offset2BDisplay: Array,
+      offsetDisplayAutoControl: Array,
       selected: false };
 
   }, //end of data
 
-  computed: _objectSpread({},
+  computed: _objectSpread(_objectSpread({
+    cellCoor: function cellCoor() {
+      return {
+        row: this.cellRow,
+        col: this.cellCol };
+
+    } },
+  (0, _vuex.mapState)({
+    hideDisplayFlag: function hideDisplayFlag(state) {return state.sudokuComp.hideDisplayFlag;} })),
+
 
   (0, _vuex.mapGetters)([
-  'cellNum2BDisplay',
-  'cellCurrentState',
   'gameMode',
+  'currentSudokuState',
+
   'selectedCellCoordinate',
-  'selectedCellCurrentNumber'])),
+
+  'displayAutoControlState',
+  'cellDisplayAutoControl',
+  'cellNum2BDisplay'])),
 
 
   //end of computed
 
   watch: {
     selectedCellCoordinate: function selectedCellCoordinate(newVal, oldVal) {
-      if (newVal.selectedCellRow === this.cellRow && newVal.selectedCellCol === this.cellCol)
-      this.selected = true; //when setBack, will change selectedCell without click the cell, so it's this sentance to set selected property correctly
-      else
+      //change in 2 condition: 
+      //1. a new cell has been clicked
+      //2. in SudokuComp, stepOperation mutate the selected cell coordiante
+      var row = newVal.row;
+      var col = newVal.col;
+      if (row === oldVal.row && col === oldVal.col) return;
+
+      if (row === -1 || col === -1) {
         this.selected = false;
+        return;
+      }
+
+      if (row === this.cellRow &&
+      col === this.cellCol) {
+        this.selected = true;
+      } else {
+        this.selected = false;
+      }
     }, //end of selectedCell
 
-    selectedCellCurrentNumber: function selectedCellCurrentNumber(newVal, oldVal) {
-      this.setOffset2BDisplay(this.cellNum2BDisplay(this.cellRow, this.cellCol));
-      if (!this.selected) return;
-      this.currentNumber = newVal;
+    currentSudokuState: {
+      deep: true,
+      handler: function handler(newVal, oldVal) {
+        // console.log(`in Cell (${this.cellRow}, ${this.cellCol}) watch: currentSudokuState`)
+        // console.log(newVal) ;
+        this.currentNumber = newVal[this.cellRow][this.cellCol].number;
+        if (this.currentNumber === 0) this.emptyFlag = true;else
+        this.emptyFlag = false;
 
-      if (this.currentNumber === 0) this.emptyFlag = true;else
-      this.emptyFlag = false;
-    } //end of selfState
-  }, //end of watch
+        this.setOffset2BDisplay(newVal[this.cellRow][this.cellCol].display);
+        // console.log("end cell watch")
+      } },
+
+
+    displayAutoControlState: {
+      handler: function handler() {
+        this.offsetDisplayAutoControl = this.cellDisplayAutoControl(this.cellRow, this.cellCol);
+      },
+      deep: true } },
+
+
+  //end of watch
+
 
   beforeMount: function beforeMount() {
-    this.currentNumber = this.cellCurrentState(this.cellRow, this.cellCol);
+    this.currentNumber = this.currentSudokuState[this.cellRow][this.cellCol].number;
+    // console.log(`in cell (${this.cellRow}, ${this.cellCol}) number: ${this.currentNumber}`) ;
+
     this.setOffset2BDisplay(this.cellNum2BDisplay(this.cellRow, this.cellCol));
+    this.offsetDisplayAutoControl = this.cellDisplayAutoControl(this.cellRow, this.cellCol);
 
     if (this.currentNumber === 0) {
       this.disableFlag = false;
@@ -214,39 +257,32 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
     }
   }, //end of beforeMount	
 
-  mounted: function mounted() {
-  }, //end of mounted()
-
   methods: _objectSpread(_objectSpread({},
   (0, _vuex.mapMutations)([
-  'mutateSelectedCellInfo'])), {}, {
+  'mutateSelectedCellCoordinate',
+  'clickACell'])), {}, {
     //end of mapMutations
 
-    setOffset2BDisplay: function setOffset2BDisplay(val) {var _this = this;
+    setOffset2BDisplay: function setOffset2BDisplay(list) {var _this = this;
+      // console.log(`in cell setOffset2BDisplay ${list}`);
       this.offset2BDisplay = [];
       for (var i = 0; i < 10; i++) {
         this.offset2BDisplay.push(" ");
       }
-      val.forEach(function (item) {
+      list.forEach(function (item) {
         _this.offset2BDisplay[item] = item.toString();
       });
-      this.offset2BDisplay.shift();
-    }, //end of setOffset2BDisplay(val)
-
-    selfState: function selfState() {
-      return this.cellCurrentState(this.cellRow, this.cellCol);
-    }, //end of selfCurrentState			
+      this.offset2BDisplay.shift(); //shift "0" in display list
+    }, //end of setOffset2BDisplay(list)
 
     clickCell: function clickCell() {
-      if (this.disableFlag)
-      this.selected = true;
-      this.mutateSelectedCellInfo({
-        row: this.cellRow,
-        col: this.cellCol,
-        currentNumber: this.currentNumber,
-        disableFlag: this.disableFlag,
-        from_comp: "Cell" });
+      //deal with click event only in condition that
+      //gameMode is "NORMAL" and the cell is not disable
+      if (this.disableFlag || this.$store.state.sudokuComp.gameMode === 'PUZZLE') return;
 
+      this.clickACell();
+      this.selected = true;
+      this.mutateSelectedCellCoordinate(this.cellCoor);
     } //end of clickCell
   }), //end of methods
 

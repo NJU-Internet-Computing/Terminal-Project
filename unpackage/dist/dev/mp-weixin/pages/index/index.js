@@ -170,7 +170,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 var _default =
 {
   data: function data() {
@@ -185,8 +184,9 @@ var _default =
     navigate2: function navigate2() {
       setTimeout(function () {
         uni.navigateTo({
-          url: "../../components/sudokuComp/SudokuComp" });
-
+          url: "../../components/sudokuComp/SudokuComp"
+          // url: "../../components/sudokuComp/Candidacy/Candidacy",
+        });
       }, 250);
 
     } //end of naviagate2

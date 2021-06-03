@@ -2,32 +2,12 @@
 	<view class="square">
 		<!-- <slot name="square"></slot> -->
 		<view v-for="(row, rowIndex) in cells" :key="rowIndex" class="cellRow">				
-			<Cell v-for="(col, colIndex) in row" :key="colIndex"
-				:cellRow="(3*squareRow+rowIndex)" 
-				:cellCol="(3*squareCol+colIndex)">				
+			<Cell v-for="(info, colIndex) in row" 
+			:key="info.cellNO"
+				:cellRow="info.cellRow" 
+				:cellCol="info.cellCol">
 			</Cell>			
-		</view>
-		<!-- <view>this is a square {{squareRow}} + {{squareCol}}</view> -->
-		
-<!-- 		<u-grid	v-for="(row, rowIndex) in squares"
-			:key="rowIndex"  
-			:col="3"
-		>
-			<view v-for="(col, colIndex) in row" 
-				:key="col"
-			>
-				<u-grid-item	bg-color="#00aaff">			
-					<Cell :cellRow="rowIndex" :cellCol="colIndex">
-						<template slot="cell">
-							<view>
-							</view>
-						</template>
-					</Cell>
-				</u-grid-item>
-			</view>
-			
-		</u-grid> -->
-		
+		</view>	
 	</view>
 </template>
 
@@ -42,21 +22,47 @@
 			squareCol:{
 				type: Number,
 				required: true,
-			}
+			},			
 		
 		},//end of props
+		computed:{
+			squareCoor(){
+				return {squareRow: this.squareRow, squareCol: this.squareCol} ;
+			},
+			
+			
+		},//end of computed
+		watch:{
+			squareCoor:{
+				handler(newVal, oldVal){
+					this.offsetSquareRow = newVal.squareRow ;
+					this.offsetSquareCol = newVal.squareCol ;
+					this.setCells() ;
+				},
+				immediate: true,
+			},//end of 
+		},
 		
 		data(){
 			return {			
-				cells:[[0, 1, 2],[3, 4, 5],[6, 7, 8]],
+				cells:[],
+				offsetSquareRow: Number,
+				offsetSquareCol: Number,
 			}
 		},//end of data
 		
 		methods:{			
+			setCells(){
+				this.cells = [] ;
+				for(let i = 3*this.offsetSquareRow; i < 3*(this.offsetSquareRow+1); i++){
+					let child = [] ;
+					for(let j = 3*this.offsetSquareCol; j < 3*(this.offsetSquareCol+1); j++){
+						child.push({cellRow: i, cellCol: j, cellNO: (9*i+j)}) ;
+					}
+					this.cells.push(JSON.parse(JSON.stringify(child))) ;
+				}
+			},//end of setCells
 		},//end of methods
-		
-		mounted(){			
-		},//end of mounted()		
 		
 		components:{
 			Cell,

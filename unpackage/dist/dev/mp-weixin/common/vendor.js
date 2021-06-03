@@ -822,7 +822,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7395,7 +7395,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7416,14 +7416,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7509,7 +7509,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"sudokuGame","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8106,10 +8106,21 @@ _vue.default.use(_vuex.default); //vue的插件机制
 //Vuex.Store 构造器选项
 var store = new _vuex.default.Store({
   state: {
-    msg: "hello world" },
+    msg: "hello world",
+    gameMode: {
+      type: String,
+      default: "NORMAL" },
+
+    difficulty: {
+      type: Number,
+      default: 1 } },
+
+
+
 
   modules: {
     sudokuComp: _sudokuComp.default } });var _default =
+
 
 
 store;exports.default = _default;
@@ -9236,26 +9247,50 @@ var index = {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _sudokuCompService = _interopRequireDefault(__webpack_require__(/*! ./sudokuCompService.js */ 14));var _mutations, _getters;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-// console.log(cellNumberToBeDisplay) ;
+
+var countOne = function countOne(number) {
+  var result = 0;
+  while (number > 0) {
+    if (number % 2 === 1) result++;
+    number = Math.floor(number / 2);
+  }
+  return result;
+};
+
+var sleep = function sleep(time) {
+  return new Promise(function (resolve) {return setTimeout(resolve, time);});
+};
+
+
 var moduleSudokuComp = {
   state: function state() {return {
 
       gameMode: "", //NORMAL or PUZZLE
 
-      //won't change just for 
-      origSudokuState: [], // end of sudokuState
+      /**
+       * @description 2D array. An buffer for the origin sudokuState
+       * @format: element {number: Number, display: []}
+       * @format: el in display. numbers not merge in units which the cell belongs to
+       */
+      origSudokuState: [],
+      //variable for current sudokuState
+      currentSudokuState: [],
 
-      //the player change this state
-      currentSudokuState: [], //end of currentSudokuState
+      hideDisplayFlag: true,
 
-      selectedCellInfo: {
+      /**
+                              * @description 9*9*9 3D array. Store display auto control flag for each cell.		 * 
+                              */
+      displayAutoControlState: [],
+
+      origSquareState: [],
+      currentSquareState: [],
+
+      selectedCellCoordinate: {
         row: 0,
-        col: 0,
-        currentNumber: 0,
-        disableFlag: true,
-        from_comp: "" } };},
+        col: 0 },
 
-
+      cellClick: false };},
   // end of state,
 
   mutations: (_mutations = {}, _defineProperty(_mutations,
@@ -9263,31 +9298,11 @@ var moduleSudokuComp = {
 
 
 
-  _sudokuCompService.default.mutateSelectedCellInfo, function (state, payload) {
-    console.log("Vuex mutation selectedCellInfo");
-    console.log(payload);
-    state.selectedCellInfo = payload;
-  }), _defineProperty(_mutations,
-
-  _sudokuCompService.default.mutateSelectedCellCurrentNumber, function (state, payload) {
-
-    var row = state.selectedCellInfo.row;
-    var col = state.selectedCellInfo.col;
-
-    state.selectedCellInfo.currentNumber = payload.currentNumber;
-    state.currentSudokuState[row][col] = state.selectedCellInfo.currentNumber;
-    // console.log(state.currentSudokuState[row][col]) ;
-  }), _defineProperty(_mutations,
-
-
-
-
   _sudokuCompService.default.initSudokuState, function (state, payload) {
-    var sudokuState = payload.sudokuState;
-    state.origSudokuState = JSON.parse(JSON.stringify(sudokuState));
-    state.currentSudokuState = JSON.parse(JSON.stringify(sudokuState));
-
-    state.origSudokuState = [
+    state.gameMode = payload.gameMode; //store gameMode
+    //init 
+    var temp = payload.sudokuState;
+    temp = [
     [0, 6, 0, 4, 0, 0, 7, 0, 0],
     [9, 5, 7, 0, 0, 1, 0, 0, 0],
     [0, 0, 1, 2, 7, 5, 0, 9, 0],
@@ -9299,76 +9314,263 @@ var moduleSudokuComp = {
     [5, 0, 4, 6, 3, 7, 2, 8, 0]];
 
 
-    state.currentSudokuState = [
-    [0, 6, 0, 4, 0, 0, 7, 0, 0],
-    [9, 5, 7, 0, 0, 1, 0, 0, 0],
-    [0, 0, 1, 2, 7, 5, 0, 9, 0],
-    [6, 3, 0, 0, 0, 0, 8, 7, 0],
-    [7, 0, 0, 8, 0, 0, 9, 0, 1],
-    [1, 0, 0, 7, 0, 6, 0, 0, 2],
-    [0, 2, 6, 5, 8, 0, 0, 0, 7],
-    [8, 0, 0, 0, 2, 4, 0, 5, 6],
-    [5, 0, 4, 6, 3, 7, 2, 8, 0]];
+    // temp =  [
+    // 	[1,2,3,4,5,6,7,8,9],
+    // 	[4,5,6,7,8,9,1,2,3],
+    // 	[7,8,9,1,2,3,4,5,6],
+    // 	[2,3,1,0,0,0,8,9,7],
+    // 	[5,6,4,0,0,0,2,3,1],
+    // 	[8,9,7,0,0,0,5,6,4],
+    // 	[3,1,2,6,4,5,9,7,8],
+    // 	[6,4,5,9,7,8,3,1,2],
+    // 	[9,7,8,3,1,2,6,4,5],
+    // ] ;
+    //for develop
+    //push all the numbers in the result, which will be stored as orig~ & current~
+    var result = [];
+    for (var i = 0; i < 9; i++) {
+      var child = [];
+      for (var j = 0; j < 9; j++) {
+        child.push({
+          number: temp[i][j],
+          display: [] });
+
+      }
+      result.push(child);
+    }
+
+    //for each cell, calculate its display array
+    for (var _i = 0; _i < 9; _i++) {
+      for (var _j = 0; _j < 9; _j++) {
+        result[_i][_j].display = this.getters.screenNumber(result, _i, _j);
+      }
+    }
+
+    //init for display AutoControl State
+    for (var _i2 = 0; _i2 < 9; _i2++) {
+      var _child = [];var _loop = function _loop(
+      _j2) {
+        var list = [];
+        for (var k = 0; k < 10; k++) {list.push(false);}
+        result[_i2][_j2].display.forEach(function (num) {
+          list[num] = true;
+        });
+        list.shift(); //shift num zero
+        _child.push(list);};for (var _j2 = 0; _j2 < 9; _j2++) {_loop(_j2);
+      }
+      state.displayAutoControlState.push(_child);
+    }
+    console.log("in initSudokuState");
+    console.log(state.displayAutoControlState);
+    //store origSudokuState & currentSudokuState
+    //BE CAREFUL not pass by reference 
+    state.origSudokuState = JSON.parse(JSON.stringify(result));
+    state.currentSudokuState = JSON.parse(JSON.stringify(result));
+  }), _defineProperty(_mutations,
+
+  _sudokuCompService.default.clickACell, function (state) {
+    state.cellClick = true;
+  }), _defineProperty(_mutations,
+  _sudokuCompService.default.recoverCellClick, function (state) {
+    state.cellClick = false;
+  }), _defineProperty(_mutations, "updateCurrentSudokuState", function updateCurrentSudokuState(
 
 
-    state.gameMode = payload.gameMode;
 
-    console.log(state.gameMode);
-    console.log(state.origSudokuState);
-    console.log(state.currentSudokuState);
+
+  state) {
+    state.currentSudokuState = JSON.parse(JSON.stringify(state.currentSudokuState));
+  }), _defineProperty(_mutations,
+
+
+
+
+
+
+
+
+
+
+  _sudokuCompService.default.mutateSelectedCellCoordinate, function (state, payload) {
+    state.selectedCellCoordinate = payload;
+  }), _defineProperty(_mutations,
+
+
+
+
+
+
+
+
+
+
+  _sudokuCompService.default.mutateCellNumber, function (state, payload) {
+    var row = payload.row;
+    var col = payload.col;
+    var oldNum = state.currentSudokuState[row][col].number;
+    var newNum = payload.number;
+    console.log("(".concat(row, ", ").concat(col, ") =>").concat(newNum, " "));
+
+    state.currentSudokuState[row][col].number = newNum;
+
+    //update display in row/col/square unit
+    for (var j = 0; j < 9; j++) {
+      state.currentSudokuState[row][j].display = this.getters.screenNumber(state.currentSudokuState, row,
+      j);}
+
+    for (var i = 0; i < 9; i++) {
+      state.currentSudokuState[i][col].display = this.getters.screenNumber(state.currentSudokuState, i,
+      col);}
+
+    var squareRow = 3 * Math.floor(row / 3);
+    var squareCol = 3 * Math.floor(col / 3);
+    for (var _i3 = squareRow; _i3 < squareRow + 3; _i3++) {
+      for (var _j3 = squareCol; _j3 < squareCol + 3; _j3++) {
+        state.currentSudokuState[_i3][_j3].display = this.getters.screenNumber(state.currentSudokuState, _i3,
+        _j3);
+      }
+    }
+
+    //if default or payload.update then update
+    if (!payload.hasOwnProperty('update') || payload.update) this.commit('updateCurrentSudokuState');
+  }), _defineProperty(_mutations,
+
+
+
+
+
+  _sudokuCompService.default.mutateCellNumberByList, function (state, payload) {var _this = this;
+    var infoList = JSON.parse(JSON.stringify(payload));
+    infoList.forEach(function (info) {
+      info.update = false;
+      _this.commit('mutateCellNumber', info);
+    });
+    this.commit('updateCurrentSudokuState');
+  }), _defineProperty(_mutations,
+
+
+
+
+  _sudokuCompService.default.clearAllAbleCells, function (state) {
+    var infoList = [];
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        //filter all not disable cell
+        var origNum = state.origSudokuState[i][j];
+        if (origNum !== 0) continue;
+        infoList.push({
+          row: i,
+          col: j,
+          number: 0 });
+
+      }
+    } //end for loop
+    this.commit('mutateCellNumberByList', infoList);
+  }), _defineProperty(_mutations,
+
+
+
+
+
+  _sudokuCompService.default.initSquareState, function (state, payload) {
+    var squareState = payload.squareState;
+    state.origSquareState = JSON.parse(JSON.stringify(squareState));
+    state.currentSqusareState = JSON.parse(JSON.stringify(squareState));
+  }), _defineProperty(_mutations,
+
+
+
+
+  _sudokuCompService.default.mutateCurrentSquareState, function (state, payload) {
+    var squareState = payload.squareState;
+    state.currentSquareState = JSON.parse(JSON.stringify(squareState));
+  }), _defineProperty(_mutations,
+
+
+
+
+
+  _sudokuCompService.default.mutateCurrentSudokuStateBySquare, function (state, payload) {
+    var info1 = payload.squareInfo1;
+    var info2 = payload.squareInfo2;
+
+    for (var i = 0; i < 3; i++) {
+      var r1 = info1.squareRow * 3 + i;
+      var r2 = info2.squareRow * 3 + i;
+
+      for (var j = 0; j < 3; j++) {
+        var c1 = info1.squareCol * 3 + j;
+        var c2 = info2.squareCol * 3 + j;
+        var num1 = state.currentSudokuState[r1][c1].number;
+        var num2 = state.currentSudokuState[r2][c2].number;
+
+        //update current sudoku state until all mutateCellNumber
+        this.commit('mutateCellNumber', {
+          row: r1,
+          col: c1,
+          number: num2,
+          update: false });
+
+        this.commit('mutateCellNumber', {
+          row: r2,
+          col: c2,
+          number: num1,
+          update: false });
+
+      }
+    } //end for loop
+    this.commit('updateCurrentSudokuState');
+  }), _defineProperty(_mutations,
+
+  _sudokuCompService.default.mutateHideDisplayFlag, function (state, payload) {
+    console.log("in mutateHideDisplayFlag");
+    console.log(payload);
+    state.hideDisplayFlag = payload;
+  }), _defineProperty(_mutations,
+
+
+
+
+  _sudokuCompService.default.mutateDisplayAutoControlState, function (state, payload) {
+    console.log("in mutate DisplayAutoControlState old:");
+    console.log(state.displayAutoControlState);
+    state.displayAutoControlState[payload.row][payload.col][payload.number - 1] = payload.autoFlag;
+    console.log("newVla: ".concat(state.displayAutoControlState[payload.row][payload.col][payload.number - 1]));
+    state.displayAutoControlState = JSON.parse(JSON.stringify(state.displayAutoControlState));
   }), _mutations),
   // end of mutations
 
-  actions: {},
 
-  //end of actions
 
-  getters: (_getters = {
 
-    /**
-                          * @return {func} (sudokuState)=>{}
-                          * which:
-                          * @description 
-                          * @return {List[Boolean]} with 9 element. true for display and false for hide
-                          */
-    screenNumber: function screenNumber(state) {return function (sudokuState, row, col) {
-        var exc = sudokuState[row][col];
-        var resultFlag = [];
-        for (var _i = 0; _i < 10; _i++) {resultFlag.push(true);}
+  getters: (_getters = {}, _defineProperty(_getters,
 
-        for (var j = 0; j < 9; j++) {
-          var num = sudokuState[row][j];
-          if (num !== 0 && num != exc) resultFlag[num] = false;
-        }
+  _sudokuCompService.default.gameMode, function (state) {return state.gameMode;}), _defineProperty(_getters,
 
-        for (var _i2 = 0; _i2 < 9; _i2++) {
-          var _num = sudokuState[_i2][col];
-          if (_num !== 0 && _num != exc) resultFlag[_num] = false;
-        }
 
-        var squareRow = 3 * Math.floor(row / 3);
-        var squareCol = 3 * Math.floor(col / 3);
-        for (var _i3 = squareRow; _i3 < squareRow + 3; _i3++) {
-          for (var _j = squareCol; _j < squareCol + 3; _j++) {
-            var _num2 = sudokuState[_i3][_j];
-            if (_num2 !== 0 && _num2 != exc) resultFlag[_num2] = false;
-          }
-        }
 
-        var result = [];
-        for (var i = 0; i < 10; i++) {
-          if (resultFlag[i]) result.push(i);
-        }
 
-        return result;
-      };} }, _defineProperty(_getters,
+  _sudokuCompService.default.currentSudokuState, function (state) {return state.currentSudokuState;}), _defineProperty(_getters,
 
-  _sudokuCompService.default.cellNumberToBeSelect, function (state, getters) {
-    return getters.screenNumber(
-    state.origSudokuState,
-    state.selectedCellInfo.row,
-    state.selectedCellInfo.col);
-    // return [0, 1, 2, 3, 4] ;
+
+
+
+
+
+
+  _sudokuCompService.default.successFlag, function (state, getters) {return function () {
+      if (state.gameMode === 'NORMAL') {
+        //每个unit，1~9必须恰好出现1次
+        return getters.normalSuccessFlag();
+      } else if (state.gameMode === 'PUZZLE') {
+        //不经过空Square的行或列，1~9必须恰好出现1次
+        //经过的行或列，必须恰好有3个0，其余数字出现次数只能为1或0
+        return getters.puzzleSuccessFlag();
+      }
+    };}), _defineProperty(_getters,
+
+  _sudokuCompService.default.cellClick, function (state, getters) {
+    return state.cellClick;
   }), _defineProperty(_getters,
 
 
@@ -9376,32 +9578,223 @@ var moduleSudokuComp = {
 
 
   _sudokuCompService.default.selectedCellCoordinate, function (state) {
-    return {
-      selectedCellRow: state.selectedCellInfo.row,
-      selectedCellCol: state.selectedCellInfo.col,
-      from_comp: state.selectedCellInfo.from_comp };
-
+    return state.selectedCellCoordinate;
   }), _defineProperty(_getters,
 
-  _sudokuCompService.default.selectedCellInfo, function (state) {
-    return state.selectedCellInfo;
-  }), _defineProperty(_getters,
+
+
+
 
   _sudokuCompService.default.selectedCellCurrentNumber, function (state) {
-    return state.selectedCellInfo.currentNumber;
+    // console.log("in selectedCellCurrentNumber")
+    // console.log(state.currentSudokuState) ;
+    var row = state.selectedCellCoordinate.row;
+    var col = state.selectedCellCoordinate.col;
+    // console.log("end selectedCellCurrentNumber") ;
+    return state.currentSudokuState[row][col].number;
   }), _defineProperty(_getters,
 
-  _sudokuCompService.default.cellCurrentState, function (state, getters) {return function (row, col) {
-      // console.log("in servise.cellCurrentState: " + state.currentSudokuState[row][col])
-      return state.currentSudokuState[row][col];
+  _sudokuCompService.default.cellNum2BSelect, function (state, getters) {return function (row, col) {
+      return state.origSudokuState[row][col].display;
     };}), _defineProperty(_getters,
-
   _sudokuCompService.default.cellNum2BDisplay, function (state, getters) {return function (row, col) {
-      return getters.screenNumber(state.currentSudokuState, row, col);
+      return state.currentSudokuState[row][col].display;
     };}), _defineProperty(_getters,
 
-  _sudokuCompService.default.selectedCellDisableFlag, function (state) {return state.selectedCellInfo.disableFlag;}), _defineProperty(_getters,
-  _sudokuCompService.default.gameMode, function (state) {return state.gameMode;}), _getters)
+
+
+
+  _sudokuCompService.default.allAbleCellCurrentInfos, function (state, getters) {return function () {
+
+      console.log("in getters: allAbleCellCurrentInfos");
+      var infos = [];
+      for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+          if (state.origSudokuState[i][j].number !== 0) continue;
+          var info = {
+            row: i,
+            col: j,
+            number: state.currentSudokuState[i][j].number };
+
+          infos.push(info);
+        }
+      } //end loop
+      console.log(infos);
+      console.log("end allAbleCellCurrentInfos");
+      return infos;
+    };}), _defineProperty(_getters,
+
+  _sudokuCompService.default.oneDisableCellCoor, function (state) {return function () {
+      for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+          if (state.origSudokuState[i][j].number !== 0) {
+            var info = {
+              row: i,
+              col: j };
+
+            return info;
+          } //end if
+        }
+      } //end loop
+    };}), _defineProperty(_getters,
+
+  _sudokuCompService.default.currentSquareState, function (state) {
+    return JSON.parse(JSON.stringify(state.currentSquareState));
+  }), _defineProperty(_getters, "screenNumber",
+
+
+
+
+
+
+
+
+  function screenNumber(state) {return function (array, row, col) {
+      var resultFlag = [];
+      for (var _i4 = 0; _i4 < 10; _i4++) {resultFlag.push(true);}
+
+      for (var j = 0; j < 9; j++) {
+        var num = array[row][j].number;
+        if (num !== 0) resultFlag[num] = false;
+      }
+
+      for (var _i5 = 0; _i5 < 9; _i5++) {
+        var _num = array[_i5][col].number;
+        if (_num !== 0) resultFlag[_num] = false;
+      }
+
+      var squareRow = 3 * Math.floor(row / 3);
+      var squareCol = 3 * Math.floor(col / 3);
+      for (var _i6 = squareRow; _i6 < squareRow + 3; _i6++) {
+        for (var _j4 = squareCol; _j4 < squareCol + 3; _j4++) {
+          var _num2 = array[_i6][_j4].number;
+          if (_num2 !== 0) resultFlag[_num2] = false;
+        }
+      }
+
+      var result = [];
+      for (var i = 0; i < 10; i++) {
+        if (resultFlag[i]) result.push(i);
+      }
+
+      return result;
+    };}), _defineProperty(_getters, "normalSuccessFlag",
+
+  function normalSuccessFlag(state) {return function () {
+      //1~9恰好出现1次，9bit二进制 511
+      var successNum = 0; //9bit 111111111
+
+      for (var i = 0; i < 9; i++) {
+        successNum = 0;
+        for (var j = 0; j < 9; j++) {
+          var num = state.currentSudokuState[i][j].number;
+          if (num === 0) break;
+          successNum += 1 << num - 1;
+        }
+        if (successNum !== 511) {
+          // console.log(`a row ${i} ${successNum}`) ;
+          return false;
+        }
+      } //end all rows
+
+
+      for (var _j5 = 0; _j5 < 9; _j5++) {
+        successNum = 0;
+        for (var _i7 = 0; _i7 < 9; _i7++) {
+          var _num3 = state.currentSudokuState[_i7][_j5].number;
+          if (_num3 === 0) break;
+          successNum += 1 << _num3 - 1;
+        }
+        if (successNum !== 511) {
+          // console.log(`a col ${j} ${successNum}`) ;
+          return false;
+        }
+      } //end all row
+
+
+      //all square
+      for (var k = 0; k < 9; k++) {
+        successNum = 0;
+        // console.log(`square ${k}`) ;
+        var squareRow = Math.floor(k / 3);
+        var squareCol = k - 3 * squareRow;
+        for (var _i8 = 3 * squareRow; _i8 < 3 * squareRow + 3; _i8++) {
+          for (var _j6 = 3 * squareCol; _j6 < 3 * squareCol + 3; _j6++) {
+            var _num4 = state.currentSudokuState[_i8][_j6].number;
+            if (_num4 === 0) break;
+            successNum += 1 << _num4 - 1;
+            // console.log(`${i},${j} ${successNum}`)
+          }}
+        if (successNum !== 511) {
+          // console.log(`a square ${k} ${successNum}`) ;
+          return false;
+        }
+      }
+
+      return true;
+    };}), _defineProperty(_getters, "puzzleSuccessFlag",
+  function puzzleSuccessFlag(state) {return function () {
+      //111010011
+      //000111111  63		
+      //111111000 511-7 = 504
+      console.log("in Vuex puzzleSuccessFlag");
+      var counter = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      var repeatFlag = false;
+
+      for (var i = 0; i < 9; i++) {
+        repeatFlag = false;
+        for (var k = 0; k < 10; k++) {counter[k] = 0;}
+
+        for (var j = 0; j < 9; j++) {
+          var num = state.currentSudokuState[i][j].number;
+          counter[num]++;
+          if (num !== 0 && counter[num] > 1) {
+            repeatFlag = true;
+            break;
+          }
+        }
+
+        // console.log("a row") ;
+        // console.log("repeat: " + repeatFlag) ;
+        // console.log(counter) ;
+        if (repeatFlag) return false;
+        if (counter[0] !== 0 && counter[0] !== 3) return false;
+      } //end all rows
+
+
+      for (var _j7 = 0; _j7 < 9; _j7++) {
+        repeatFlag = false;
+        for (var _k = 0; _k < 10; _k++) {counter[_k] = 0;}
+
+        for (var _i9 = 0; _i9 < 9; _i9++) {
+          var _num5 = state.currentSudokuState[_i9][_j7].number;
+          counter[_num5]++;
+          if (_num5 !== 0 && counter[_num5] > 1) {
+            repeatFlag = true;
+            break;
+          }
+        }
+        // console.log("a col") ;
+        // console.log("repeat: " + repeatFlag) ;
+        // console.log(counter) ;
+        if (repeatFlag) return false;
+        if (counter[0] !== 0 && counter[0] !== 3) return false;
+      } //end all row
+
+      return true;
+    };}), _defineProperty(_getters,
+
+  _sudokuCompService.default.hideDisplayFlag, function (state) {return function () {
+      return state.hideDisplayFlag;
+    };}), _defineProperty(_getters,
+
+  _sudokuCompService.default.cellDisplayAutoControl, function (state) {return function (row, col) {
+      return state.displayAutoControlState[row][col];
+    };}), _defineProperty(_getters,
+  _sudokuCompService.default.displayAutoControlState, function (state) {
+    return state.displayAutoControlState;
+  }), _getters)
+
   //end of getters
 };var _default =
 moduleSudokuComp;exports.default = _default;
@@ -9416,37 +9809,75 @@ moduleSudokuComp;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //mutations
-var mutateSelectedCellInfo = 'mutateSelectedCellInfo';
 var initSudokuState = 'initSudokuState';
-var mutateSelectedCellCurrentNumber = 'mutateSelectedCellCurrentNumber';
+var clickACell = 'clickACell';
+var recoverCellClick = 'recoverCellClick';
+var mutateSelectedCellCoordinate = 'mutateSelectedCellCoordinate';
+var mutateCellNumber = 'mutateCellNumber';
+var mutateCellNumberByList = 'mutateCellNumberByList';
+var clearAllAbleCells = 'clearAllAbleCells';
+
+var mutateHideDisplayFlag = 'mutateHideDisplayFlag';
+var mutateDisplayAutoControlState = 'mutateDisplayAutoControlState';
+
+var initSquareState = 'initSquareState';
+var mutateCurrentSquareState = 'mutateCurrentSquareState';
+var mutateCurrentSudokuStateBySquare = 'mutateCurrentSudokuStateBySquare';
+
+
 
 //getters
-var cellNumberToBeSelect = 'cellNumberToBeSelect';
-// const cellNumberToBeDisplay = 'cellNumberToBeDisplay' ;
+
+var gameMode = 'gameMode';
+var currentSudokuState = 'currentSudokuState';
+var successFlag = 'successFlag';
+
+var displayAutoControlState = 'displayAutoControlState';
+var cellDisplayAutoControl = 'cellDisplayAutoControl';
+var hideDisplayFlag = 'hideDisplayFlag';
+
+var cellClick = 'cellClick';
 var selectedCellCoordinate = 'selectedCellCoordinate';
-var selectedCellInfo = 'selectedCellInfo';
 var selectedCellCurrentNumber = 'selectedCellCurrentNumber';
-var cellCurrentState = 'cellCurrentState';
+var cellNum2BSelect = 'cellNum2BSelect';
 var cellNum2BDisplay = 'cellNum2BDisplay';
-var selectedCellDisableFlag = 'selectedCellDisableFlag';
-var gameMode = 'gameMode';var _default =
+
+var oneDisableCellCoor = 'oneDisableCellCoor';
+var allAbleCellCurrentInfos = 'allAbleCellCurrentInfos';
+
+var currentSquareState = 'currentSquareState';var _default =
 
 {
   //mutations
   initSudokuState: initSudokuState,
-  mutateSelectedCellInfo: mutateSelectedCellInfo,
-  mutateSelectedCellCurrentNumber: mutateSelectedCellCurrentNumber,
+  mutateSelectedCellCoordinate: mutateSelectedCellCoordinate,
+  mutateCellNumber: mutateCellNumber,
+  mutateCellNumberByList: mutateCellNumberByList,
+  clearAllAbleCells: clearAllAbleCells,
+  initSquareState: initSquareState,
+  mutateCurrentSquareState: mutateCurrentSquareState,
+  mutateCurrentSudokuStateBySquare: mutateCurrentSudokuStateBySquare,
+  recoverCellClick: recoverCellClick,
+  clickACell: clickACell,
+  mutateHideDisplayFlag: mutateHideDisplayFlag,
+  mutateDisplayAutoControlState: mutateDisplayAutoControlState,
 
   //getters
-  cellNumberToBeSelect: cellNumberToBeSelect,
-  // cellNumberToBeDisplay,
+  gameMode: gameMode,
+  currentSudokuState: currentSudokuState,
+  successFlag: successFlag,
+  cellClick: cellClick,
   selectedCellCoordinate: selectedCellCoordinate,
-  selectedCellInfo: selectedCellInfo,
   selectedCellCurrentNumber: selectedCellCurrentNumber,
-  cellCurrentState: cellCurrentState,
+  cellNum2BSelect: cellNum2BSelect,
   cellNum2BDisplay: cellNum2BDisplay,
-  selectedCellDisableFlag: selectedCellDisableFlag,
-  gameMode: gameMode };exports.default = _default;
+  allAbleCellCurrentInfos: allAbleCellCurrentInfos,
+  currentSquareState: currentSquareState,
+
+  oneDisableCellCoor: oneDisableCellCoor,
+  cellDisplayAutoControl: cellDisplayAutoControl,
+  hideDisplayFlag: hideDisplayFlag,
+  displayAutoControlState: displayAutoControlState };exports.default = _default;
 
 /***/ }),
 /* 15 */
@@ -11936,8 +12367,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   validTopPtr: 0,
   pointer: 0,
 
-  push: function push(obj) {
-    // console.log(obj)
+  push: function push(payload) {
+    console.log("push");
+    var obj = JSON.parse(JSON.stringify(payload));
     if (this.pointer >= this.maxSize) {
       console.log("stack full");
       return;
@@ -11952,6 +12384,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     this.pointer++;
     this.validTopPtr = this.pointer;
 
+    console.log(this.array);
+    // console.log(this.pointer + " / " + this.validTopPtr) ;
   }, //end of push
 
   pop: function pop() {
@@ -11973,21 +12407,27 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   }, //end of pop
 
   revoke: function revoke() {
+    console.log("revoke");
     if (this.pointer === 1) {
       console.log("no more revoke");
       return null;
     }
 
     this.pointer--;
+    console.log(this.array);
+    console.log(this.pointer + " / " + this.validTopPtr);
     return this.array[this.pointer - 1];
   }, //end of revoke
 
   withdraw: function withdraw() {
+    console.log("withdraw");
     if (this.pointer === this.validTopPtr) {
       console.log("no more withdraw");
       return null;
     }
     this.pointer++;
+    console.log(this.array);
+    console.log(this.pointer + " / " + this.validTopPtr);
     return this.array[this.pointer - 1];
   }, //end of withdraw
 

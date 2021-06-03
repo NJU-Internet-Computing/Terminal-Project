@@ -84,6 +84,49 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* @import url("../../../static/components/SudokuComp/Board/background-image.png"); */
 .Board{
 	margin: 0 auto ;

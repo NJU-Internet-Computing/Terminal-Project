@@ -6,13 +6,7 @@
 		<image class="logo" src="/static/logo.png"></image>
 		<view class="text-area">
 			<text class="title">{{title}}</text>
-		</view>
-	
-		<u-button open-type="default"  ripple  ripple-bg-color="#E0E6FE" @click="navigate2">
-			调试用
-			
-		</u-button>
-		
+		</view>		
 	</view>
 </template>
 
@@ -30,7 +24,8 @@
 			navigate2(){
 				setTimeout(()=>{
 					uni.navigateTo({
-						url: "../../components/sudokuComp/SudokuComp",
+						url: "../../components/sudokuComp/SudokuComp",						
+						// url: "../../components/sudokuComp/Candidacy/Candidacy",
 					}) ;
 				}, 250) ;
 				

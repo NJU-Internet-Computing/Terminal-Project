@@ -29,6 +29,7 @@
   font-weight: 700;
   color: #405878;
   width: 80rpx;
+  position: relative;
 }
 .disable {
   color: #A088A0;
