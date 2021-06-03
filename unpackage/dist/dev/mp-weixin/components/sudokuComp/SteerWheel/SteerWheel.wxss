@@ -1,0 +1,9 @@
+
+.SteerWheel{
+	width: 600rpx;
+	margin: 10rpx auto ;
+}
+.u-grid-row{
+	width: 100%;
+}
+

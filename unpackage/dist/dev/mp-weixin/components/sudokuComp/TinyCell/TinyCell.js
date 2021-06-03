@@ -120,17 +120,20 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
 var _default =
 {
   props: {
     display: "",
-    selectedFlag: Boolean },
+    selectedFlag: Boolean,
+    autoControlFlag: Boolean },
   //end of props		
 
   data: function data() {
     return {
-      offsetDisplay: "" };
-
+      offsetDisplay: "",
+      space: " " //占位符
+    };
   }, //end of data
 
   computed: {},

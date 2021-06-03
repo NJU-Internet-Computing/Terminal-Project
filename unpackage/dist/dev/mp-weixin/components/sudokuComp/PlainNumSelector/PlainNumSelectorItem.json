@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "u-badge": "/node-modules/uview-ui/components/u-badge/u-badge"
+  },
   "component": true
 }

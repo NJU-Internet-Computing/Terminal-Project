@@ -158,26 +158,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {
   props: {
     squareRow: {
@@ -190,18 +170,44 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
   //end of props
+  computed: {
+    squareCoor: function squareCoor() {
+      return { squareRow: this.squareRow, squareCol: this.squareCol };
+    } },
+
+
+  //end of computed
+  watch: {
+    squareCoor: {
+      handler: function handler(newVal, oldVal) {
+        this.offsetSquareRow = newVal.squareRow;
+        this.offsetSquareCol = newVal.squareCol;
+        this.setCells();
+      },
+      immediate: true }
+    //end of 
+  },
 
   data: function data() {
     return {
-      cells: [[0, 1, 2], [3, 4, 5], [6, 7, 8]] };
+      cells: [],
+      offsetSquareRow: Number,
+      offsetSquareCol: Number };
 
   }, //end of data
 
-  methods: {},
-  //end of methods
-
-  mounted: function mounted() {
-  }, //end of mounted()		
+  methods: {
+    setCells: function setCells() {
+      this.cells = [];
+      for (var i = 3 * this.offsetSquareRow; i < 3 * (this.offsetSquareRow + 1); i++) {
+        var child = [];
+        for (var j = 3 * this.offsetSquareCol; j < 3 * (this.offsetSquareCol + 1); j++) {
+          child.push({ cellRow: i, cellCol: j, cellNO: 9 * i + j });
+        }
+        this.cells.push(JSON.parse(JSON.stringify(child)));
+      }
+    } //end of setCells
+  }, //end of methods
 
   components: {
     Cell: Cell }

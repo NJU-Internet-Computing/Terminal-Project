@@ -1,6 +1,7 @@
 <template>
-	<view class="tinyCell" :class="{'selectedFlag': selectedFlag}">
-		{{offsetDisplay}}
+	<view class="tinyCell" :class="{'selectedFlag': selectedFlag}" >
+		<view v-show="autoControlFlag">{{offsetDisplay}}</view>
+		<view v-show="!autoControlFlag">{{space}}</view>
 	</view>
 </template>
 
@@ -9,11 +10,13 @@
 		props: {
 			display: "",
 			selectedFlag: Boolean,
+			autoControlFlag: Boolean, 
 		},//end of props		
 		
 		data(){
 			return {
-				offsetDisplay: ""
+				offsetDisplay: "",
+				space: " ",//占位符
 			}
 		},//end of data
 		

@@ -5,20 +5,16 @@
 			<PlainNumSelectorItem v-for="(item, index) in offset2BSelect" 
 				:key="index"
 				:val="item.val"
-				:disableFlag="item.disableFlag"
-				@click="clickItem($event, item.val)">				
+				:selectableFlag="item.disableFlag"
+				:candidacyFlag="offset2BDisplay[index]"
+				:autoControlFlag="displayAutoControl[index]"
+				@click="clickItem($event, item.val)"
+				@dbClick="changeAutoControlFlag($event, item.val, displayAutoControl[index])"
+				>				
 			</PlainNumSelectorItem>			
 		</view>
 		<!-- end of view.selector -->
-		
-		<!-- <PlainNumSelectorIndiFrame 	
-			id="indicator"
-			class="indicator"
-			:animation="animate"
-			v-show="(offsetCurrentItem !== 0)"
-			ref="indiFrame"
-		></PlainNumSelectorIndiFrame> -->
-		
+	
 		<view
 			id="indicator"
 			class="indicator"
@@ -31,7 +27,6 @@
 </template>
 
 <script>
-	import PlainNumSelectorIndiFrame from './PlainNumSelectorIndiFrame.vue'
 	import PlainNumSelectorItem from './PlainNumSelectorItem.vue'
 	export default{	
 		props:{
@@ -39,17 +34,22 @@
 				type: Array,
 				required: true
 			},
+			list2BDisplay:{
+				type: Array,				
+			},
+			displayAutoControl:{
+				type: Array,
+			},
 			currentItem:{
 				type: [Number, String],				
 			},
-			disableFlag:{
-				type:Boolean,
-			}
 		},//end of props
 		
 		data(){
 			return {
 				offset2BSelect: Array,
+				offset2BDisplay: Array,
+				
 				slideCount: 0,
 				offsetWidth: 0,				
 				offsetHeight: 0,
@@ -63,7 +63,8 @@
 				moveRatio: 0.33,
 				
 				startX: Number,
-				distance: Number,				
+				distance: Number,	
+							
 			}
 		},//end of data		
 		
@@ -71,14 +72,15 @@
 		},//end of computed
 		
 		watch: {
-			list2BSelect(newVal, oldVal){
+			list2BSelect(newVal, oldVal){				
 				this.setOffset2BSelect(newVal) ;
 				this.offsetCurrentItem = this.currentItem ;
 				// this.initAnim() ;
 			},
+			list2BDisplay(newVal, oldVal){
+				this.setOffset2BDisplay(newVal) ;
+			},
 			currentItem(newVal, oldVal){
-				console.log("in watch: currentItem")
-				console.log("newVal " + newVal) ;
 				this.offsetCurrentItem = newVal ;
 				this.slideAnim() ;
 				// this.setCurrentItem(newVal) ;
@@ -86,12 +88,7 @@
 			}
 		},//end of watch
 		
-		beforeMount(){
-			console.log("in PlainNumSelector hook: beforeMounted")
-			// let query = wx.createSelectorQuery() ;
-			// let comp = query.select('.indicator').fields({				
-			// 	computedStyle: [''],
-			// })
+		beforeMount(){			
 			this.setOffset2BSelect(this.list2BSelect) ;
 			let w = 0 ;
 			let h = 0 ;
@@ -103,17 +100,12 @@
 			})
 			this.offsetWidth = w ;
 			this.offsetHeight = h ;
-			console.log(this.offsetWidth) ;
 			this.Animation = wx.createAnimation({
 				duration: 400,
 				timingFunction: 'ease-out',
 			})
 			this.initAnim() ;
 		},//end of beforeMounted
-		
-		mounted(){
-			console.log("in PlainNumSelector hook: mounted")
-		},//end of mounted()	
 		
 		methods:{
 			initAnim(){
@@ -131,16 +123,16 @@
 				this.animate = this.Animation.export() ;
 			},//end of setTransform
 			
-			clickItem(e, targetVal){
-				console.log("click " + targetVal) ;
-				this.offsetCurrentItem = targetVal ;
+			clickItem(e, targetNumber){
+				this.offsetCurrentItem = targetNumber ;
 				this.slideAnim() ;
-				this.$emit('selected', targetVal) ;
-			},//end of clickItem
-			
-			setCurrentItem(val){
-				
-			},//end of setCurrentItem
+				this.$emit('selected', targetNumber) ;
+			},//end of clickItem	
+					
+			changeAutoControlFlag(e, targetNumber, oldAutoControlFlag){				
+				console.log(`in changeAutoControlFlag`) ;
+				this.$emit('changeAutoControl', {number: targetNumber, flag: !oldAutoControlFlag}) ;
+			},
 			
 			setOffset2BSelect(list){
 				this.offset2BSelect = [] ;
@@ -155,14 +147,23 @@
 					this.offset2BSelect[num].disableFlag = false ;
 				}) ;
 				this.offset2BSelect.shift() ;// shift obj which have 0 insize
-				console.log("func: setOffset2BSelect")
-				console.log(this.offset2BSelect) ;
 			},//end of setOffset2BSelect()
+			
+			setOffset2BDisplay(list){
+				this.offset2BDisplay = [] ;
+				for(let i = 0; i < 10; i++)this.offset2BDisplay.push(false) ;
+				
+				list.forEach((num)=>{
+					this.offset2BDisplay[num] = true ;
+				}) ; 
+				
+				this.offset2BDisplay.shift() ;
+				console.log(this.offset2BDisplay) ;
+			},//end setOffset2BDisplay
 		},//end of methods		
 		
 		components:{			
 			PlainNumSelectorItem,
-			PlainNumSelectorIndiFrame,
 		},//end of components
 	}
 </script>

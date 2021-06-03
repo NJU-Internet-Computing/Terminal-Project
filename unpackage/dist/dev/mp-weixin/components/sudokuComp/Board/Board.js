@@ -132,37 +132,54 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {
+  props: {
+    squares: {
+      type: Array,
+      default: [[
+      { squareNo: 0, squareRow: 0, squareCol: 0 },
+      { squareNo: 1, squareRow: 0, squareCol: 1 },
+      { squareNo: 2, squareRow: 0, squareCol: 2 }],
+      [
+      { squareNo: 3, squareRow: 1, squareCol: 0 },
+      { squareNo: 4, squareRow: 1, squareCol: 1 },
+      { squareNo: 5, squareRow: 1, squareCol: 2 }],
+      [
+      { squareNo: 6, squareRow: 2, squareCol: 0 },
+      { squareNo: 7, squareRow: 2, squareCol: 1 },
+      { squareNo: 8, squareRow: 2, squareCol: 2 }]] }
+
+
+    //end of squares
+  }, //end of props
+
+  computed: {},
+  //end of computed
+
+  watch: {
+    squares: {
+      handler: function handler(newVal, oldVal) {
+        this.slideSquare();
+      },
+      deep: true } },
+
+  //end of watch
+
   data: function data() {
     return {
+
       dest: 0,
       Animation: Object,
       // animate: Array,
       animate: [],
-      squares: [[0, 1, 2], [3, 4, 5], [6, 7, 8]] };
+
+      offsetUnit: Number,
+      origSquares: [] };
+
+
+
 
   }, //end of data
-
-  computed: {},
-  //end of computed
 
   beforeMount: function beforeMount() {
     this.Animation = wx.createAnimation({
@@ -176,6 +193,18 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       var temp = Object.assign({}, this.Animation.export());
       this.animate.push(temp);
     }
+
+
+    var width = 0;
+    wx.getSystemInfo({
+      success: function success(res) {
+        width = res.windowWidth;
+      } });
+
+    this.offsetUnit = Math.floor(236 * width / 750);
+
+    this.origSquares = this.squares;
+
     // this.animate = this.Animation.export() ;
   }, //end of beforeMount
 
@@ -186,10 +215,24 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     getKey: function getKey(row, col) {
       return row * 3 + col;
     },
-    setTransform: function setTransform(dest, i) {
-      this.Animation.translateX(dest).step();
-      this.animate[i] = this.Animation.export();
-      // this.animate = this.Animation.export() ;
+    slideSquare: function slideSquare() {
+      this.animate = [];
+      for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 3; j++) {
+          var dx = this.squares[i][j].squareCol - this.origSquares[i][j].squareCol;
+          var dy = this.squares[i][j].squareRow - this.origSquares[i][j].squareRow;
+
+          var destX = dx * this.offsetUnit;
+          var destY = dy * this.offsetUnit;
+          var coor = i * 3 + j;
+          this.animate.push(this.setTransform(destX, destY, coor));
+        }
+      }
+
+    }, //end of slideSquare
+    setTransform: function setTransform(destX, destY, i) {
+      this.Animation.translate(destX, destY).step();
+      return this.Animation.export();
     } //end of setTransform(dest)
   }, //end of methods				
 

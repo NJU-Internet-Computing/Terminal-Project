@@ -77,6 +77,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uBadge: function() {
+      return __webpack_require__.e(/*! import() | node-modules/uview-ui/components/u-badge/u-badge */ "node-modules/uview-ui/components/u-badge/u-badge").then(__webpack_require__.bind(null, /*! uview-ui/components/u-badge/u-badge.vue */ 151))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -114,44 +137,77 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+
+
 {
   props: {
     val: Number,
-    disableFlag: Boolean },
+    selectableFlag: Boolean, //selectable
+    candidacyFlag: Boolean, //
+    autoControlFlag: Boolean },
   //end of props		
 
   data: function data() {
-    return {};
+    return {
+      clickNum: 0 };
 
   }, //end of data
 
-  computed: {},
+  computed: _objectSpread({},
+  (0, _vuex.mapState)({
+    hideAllDisplayFlag: function hideAllDisplayFlag(state) {return state.sudokuComp.hideDisplayFlag;} })),
+
   //end of computed
 
   watch: {},
   //end of watch
 
-  beforeMounted: function beforeMounted() {
+  beforeMount: function beforeMount() {
 
   }, //end of beforeMounted
 
-  mounted: function mounted() {
-  }, //end of mounted()	
-
   methods: {
-    clickItem: function clickItem() {
-      if (!this.disableFlag) this.$emit('click');
+    clickItem: function clickItem() {var _this = this;
+      if (this.disableFlag) return;
+      this.clickNum++;
+      console.log(this.clickNum);
+      setTimeout(function () {
+        if (_this.clickNum === 1) {
+          console.log("单击了");
+          _this.singleClickHandler();
+        } else if (_this.clickNum === 2) {
+          console.log("双击了");
+          _this.doubleClickHandler();
+        }
+        _this.clickNum = 0;
+      }, 250);
+    },
+    singleClickHandler: function singleClickHandler() {
+      this.$emit('click');
+    },
+    doubleClickHandler: function doubleClickHandler() {
+      this.$emit('dbClick');
     } },
   //end of methods		
 

@@ -2,8 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/stages/stages",
-    "pages/gamePage/gamePage",
-    "components/sudokuComp/SudokuComp"
+    "pages/gamePage/gamePage"
   ],
   "subPackages": [],
   "window": {

@@ -100,8 +100,8 @@ prop:{
     sudokuState: List, 
 },
 $emit:{
-    ("GameOver", result)//数独游戏结束（指通关），result内容待定
-  	("GamePause", result)//玩家中断该局游戏，  result内容待定
+    ("gameOver", result)//数独游戏结束（指通关），result内容待定
+  	("gamePause", result)//玩家中断该局游戏，  result内容待定
 }
 ```
 
@@ -263,4 +263,27 @@ playing：
 2. VueX中，监听变更，修改currentSudokuState，
 
 
+
+
+
+## 设计
+
+### 初始化
+
+只有父组件初始化后，子组件才能开始初始化。
+
+1. SudokuComp，beforeMount：参数gameMode，sudokuState。使用参数初始化store。若NORMAL，可以不做任何东西。若PUZZLE，初始化store，寻找出state全为0的宫格坐标并缓存。
+2. Board。无参数。beforeMount：创建wx.Animation，创建9个动画实例用于绑定每个Square；获取系统硬件的信息，计算动画所用数据并缓存。使用data：Squares：[]绑定每个Square
+3. Square。参数squareRow，squareCol。immediate watch：squareCoor，缓存参数，初始化cells数组，使用cells内容绑定下属的9个cell
+4. Cell。参数cellRow，cellCol。beforeMount：获取映射格子的state并缓存，获取映射格子的候选数并缓存，根据state设置emptyFlag与disableFlag
+5. TinyCell。略
+
+
+
+### NORMAL
+
+#### 选择数字
+
+1. 玩家点击cell组件，触发click事件。
+2. 
 

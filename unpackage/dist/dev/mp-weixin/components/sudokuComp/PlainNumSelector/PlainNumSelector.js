@@ -114,12 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var PlainNumSelectorIndiFrame = function PlainNumSelectorIndiFrame() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/PlainNumSelector/PlainNumSelectorIndiFrame */ "components/sudokuComp/PlainNumSelector/PlainNumSelectorIndiFrame").then((function () {return resolve(__webpack_require__(/*! ./PlainNumSelectorIndiFrame.vue */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PlainNumSelectorItem = function PlainNumSelectorItem() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/PlainNumSelector/PlainNumSelectorItem */ "components/sudokuComp/PlainNumSelector/PlainNumSelectorItem").then((function () {return resolve(__webpack_require__(/*! ./PlainNumSelectorItem.vue */ 155));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var PlainNumSelectorItem = function PlainNumSelectorItem() {__webpack_require__.e(/*! require.ensure | components/sudokuComp/PlainNumSelector/PlainNumSelectorItem */ "components/sudokuComp/PlainNumSelector/PlainNumSelectorItem").then((function () {return resolve(__webpack_require__(/*! ./PlainNumSelectorItem.vue */ 155));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -155,17 +150,22 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       type: Array,
       required: true },
 
-    currentItem: {
-      type: [Number, String] },
+    list2BDisplay: {
+      type: Array },
 
-    disableFlag: {
-      type: Boolean } },
+    displayAutoControl: {
+      type: Array },
+
+    currentItem: {
+      type: [Number, String] } },
 
   //end of props
 
   data: function data() {
     return {
       offset2BSelect: Array,
+      offset2BDisplay: Array,
+
       slideCount: 0,
       offsetWidth: 0,
       offsetHeight: 0,
@@ -181,6 +181,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       startX: Number,
       distance: Number };
 
+
   }, //end of data		
 
   computed: {},
@@ -192,9 +193,10 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       this.offsetCurrentItem = this.currentItem;
       // this.initAnim() ;
     },
+    list2BDisplay: function list2BDisplay(newVal, oldVal) {
+      this.setOffset2BDisplay(newVal);
+    },
     currentItem: function currentItem(newVal, oldVal) {
-      console.log("in watch: currentItem");
-      console.log("newVal " + newVal);
       this.offsetCurrentItem = newVal;
       this.slideAnim();
       // this.setCurrentItem(newVal) ;
@@ -203,11 +205,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   //end of watch
 
   beforeMount: function beforeMount() {
-    console.log("in PlainNumSelector hook: beforeMounted");
-    // let query = wx.createSelectorQuery() ;
-    // let comp = query.select('.indicator').fields({				
-    // 	computedStyle: [''],
-    // })
     this.setOffset2BSelect(this.list2BSelect);
     var w = 0;
     var h = 0;
@@ -219,17 +216,12 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
     this.offsetWidth = w;
     this.offsetHeight = h;
-    console.log(this.offsetWidth);
     this.Animation = wx.createAnimation({
       duration: 400,
       timingFunction: 'ease-out' });
 
     this.initAnim();
   }, //end of beforeMounted
-
-  mounted: function mounted() {
-    console.log("in PlainNumSelector hook: mounted");
-  }, //end of mounted()	
 
   methods: {
     initAnim: function initAnim() {
@@ -247,16 +239,16 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       this.animate = this.Animation.export();
     }, //end of setTransform
 
-    clickItem: function clickItem(e, targetVal) {
-      console.log("click " + targetVal);
-      this.offsetCurrentItem = targetVal;
+    clickItem: function clickItem(e, targetNumber) {
+      this.offsetCurrentItem = targetNumber;
       this.slideAnim();
-      this.$emit('selected', targetVal);
-    }, //end of clickItem
+      this.$emit('selected', targetNumber);
+    }, //end of clickItem	
 
-    setCurrentItem: function setCurrentItem(val) {
-
-    }, //end of setCurrentItem
+    changeAutoControlFlag: function changeAutoControlFlag(e, targetNumber, oldAutoControlFlag) {
+      console.log("in changeAutoControlFlag");
+      this.$emit('changeAutoControl', { number: targetNumber, flag: !oldAutoControlFlag });
+    },
 
     setOffset2BSelect: function setOffset2BSelect(list) {var _this = this;
       this.offset2BSelect = [];
@@ -271,14 +263,23 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
         _this.offset2BSelect[num].disableFlag = false;
       });
       this.offset2BSelect.shift(); // shift obj which have 0 insize
-      console.log("func: setOffset2BSelect");
-      console.log(this.offset2BSelect);
-    } //end of setOffset2BSelect()
+    }, //end of setOffset2BSelect()
+
+    setOffset2BDisplay: function setOffset2BDisplay(list) {var _this2 = this;
+      this.offset2BDisplay = [];
+      for (var i = 0; i < 10; i++) {this.offset2BDisplay.push(false);}
+
+      list.forEach(function (num) {
+        _this2.offset2BDisplay[num] = true;
+      });
+
+      this.offset2BDisplay.shift();
+      console.log(this.offset2BDisplay);
+    } //end setOffset2BDisplay
   }, //end of methods		
 
   components: {
-    PlainNumSelectorItem: PlainNumSelectorItem,
-    PlainNumSelectorIndiFrame: PlainNumSelectorIndiFrame }
+    PlainNumSelectorItem: PlainNumSelectorItem }
   //end of components
 };exports.default = _default;
 
