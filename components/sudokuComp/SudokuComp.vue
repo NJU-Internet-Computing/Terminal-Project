@@ -2,12 +2,12 @@
 	<view>
 
 		<view class="operations">
-			<u-button :custom-style="warningButtonStyle" open-type="default" ripple ripple-bg-color="#E0E6FE"
+			<u-button :custom-style="warningButtonStyle" hair-line="false" open-type="default" ripple ripple-bg-color="#efe9d3"
 				@click="clearAllCell" v-if="gameMode==='NORMAL'">
 				全部清空
 			</u-button>
 
-			<u-button :custom-style="infoButtonStyle" open-type="default" ripple ripple-bg-color="#6A98CA"
+			<u-button :custom-style="infoButtonStyle" hair-line="true" open-type="default" ripple ripple-bg-color="#c19a95"
 				@click="setDisplay" v-if="gameMode==='NORMAL'" v-text="displayMsg">
 			</u-button>
 		</view>
@@ -15,20 +15,20 @@
 		<Board :squares="squareInfos"></Board>
 
 		<view class="operations">
-			<u-button :custom-style="infoButtonStyle" open-type="default" ripple ripple-bg-color="#B3AED7"
+			<u-button :custom-style="infoButtonStyle" hair-line="false"  open-type="default" ripple ripple-bg-color="#c19a95"
 				@click="revoke" v-if="gameMode==='NORMAL'">
-				<u-icon name="reload" size="50"></u-icon>
+				<u-icon name="reload" size="50" class="reverseIcon"></u-icon>
 			</u-button>
 
-			<u-button :custom-style="infoButtonStyle" open-type="default" ripple ripple-bg-color="#6A98CA"
+			<u-button :custom-style="infoButtonStyle" hair-line="false"  open-type="default" ripple ripple-bg-color="#c19a95"
 				@click="clearOneCell" v-if="gameMode==='NORMAL'">
 				清空
 			</u-button>
 
-			<u-button :custom-style="infoButtonStyle" v-if="gameMode==='NORMAL'" open-type="default" ripple
-				ripple-bg-color="#B3AED7" @click="withdraw">
+			<u-button :custom-style="infoButtonStyle" hair-line="false" v-if="gameMode==='NORMAL'" open-type="default" ripple
+				ripple-bg-color="#c19a95" @click="withdraw">
 				<!-- 撤回 -->
-				<u-icon name="reload" size="50" class="reverseIcon"></u-icon>
+				<u-icon name="reload" size="50"></u-icon>
 			</u-button>
 		</view>
 
@@ -155,21 +155,14 @@
 				//operation button style
 				warningButtonStyle: {
 					color: '#FFFFFF',
-					backgroundColor: '#A088A0',
+					backgroundColor: '#bd8577',
 					fontSize: "40rpx",
 				},
 				infoButtonStyle: {
-					color: '#405878',
-					backgroundColor: '#F6F6F6',
+					color: '#7b5f5c',
+					backgroundColor: '#eee8d2',
 					fontSize: "40rpx",
 				},
-
-				//collapse style
-				collapseItemStyle: {},
-				collapseHeadStyle: {
-					fontSize: '40rpx',
-				},
-				collapseBodyStyle: {},
 			}
 		}, //end of data
 

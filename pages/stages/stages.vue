@@ -117,7 +117,7 @@
 	}
 
 	.head {
-		margin-left: 140rpx;
+		margin: 0 auto;
 		text-align: center;
 		padding: 20px;
 

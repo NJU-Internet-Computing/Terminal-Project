@@ -13,6 +13,6 @@
 	.indiFrame{
 		width: 80rpx;
 		height: 100rpx;
-		border: 8rpx solid #007AFF ;
+		border: 8rpx solid #bd8577 ;		
 	}
 </style>

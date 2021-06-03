@@ -6,12 +6,12 @@
 		<view class="content">
 			<view class="vb1">
 				<u-button :custom-style="customStyle1" hair-line="false" shape="circle" ripple="true"
-					ripple-bg-color="#59a1d2" @click="goToStages">
+					ripple-bg-color="#bd8577" @click="goToStages">
 					普通模式
 				</u-button>
 			</view>
 			<view class="vb2">
-				<u-button :custom-style="customStyle2" shape="circle" ripple="true" ripple-bg-color="#59a1d2"
+				<u-button :custom-style="customStyle2" shape="circle" ripple="true" ripple-bg-color="#7b5f5c"
 					@click="goToGamePage">
 					挑战模式
 				</u-button>

@@ -170,8 +170,8 @@
 
 <style>
 	.hy-selector{
-		border-top: 4rpx solid #3F536E;
-		border-bottom: 4rpx solid #3F536E;
+		border-top: 4rpx solid #c19a95;
+		border-bottom: 4rpx solid #c19a95;
 		
 		height: 108rpx;
 		line-height: 100rpx;
@@ -189,7 +189,8 @@
 	.indicator{
 		width: 80rpx;
 		height: 110rpx;
-		border: 10rpx solid #B3AED7 ;
+		border: 10rpx solid #c19a95 ;
+		opacity: 1;
 	}
 	
 </style>

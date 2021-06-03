@@ -180,14 +180,14 @@
 	.cell {
 		width: 76rpx;
 		height: 76rpx;
-		border: 2rpx solid #A088A0;
-		color: #A088A0;
+		border: 2rpx solid #7b5f5c;
+		color: #614e4b;
 	}
 
 	.selectedCell {
 		border-style: outset;
 		color: #FFFFFF;
-		background-color: #ba98ca;
+		background-color: #bd8577;
 	}
 
 	.cellContent {
@@ -200,8 +200,9 @@
 	}
 
 	.disable {
-		color: #6A98CA;
-		opacity: .7;
+		color: #c19a95; 
+		/* color: #FFFFFF ; */
+		opacity: .9;
 	}
 
 	.display {

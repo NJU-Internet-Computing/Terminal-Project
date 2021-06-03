@@ -50,7 +50,7 @@
 		
 		methods:{			
 			clickItem(){
-				if(this.disableFlag) return ;
+				if(this.selectableFlag) return ;
 				this.clickNum++ ;
 				console.log(this.clickNum) ;
 				setTimeout(()=>{
@@ -81,7 +81,7 @@
 	.PlainNumSelectorItem{
 		font-size: 80rpx;
 		font-weight: 700;
-		color: #405878;		
+		color: #7b5f5c;		
 		// color: $uni-color-error;
 		width: 80rpx ;
 		

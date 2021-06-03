@@ -56,7 +56,7 @@
 		text-align: center;
 		font-size: 22rpx;
 		/* font-weight: 700; */
-		color: #405878;
+		color: #000000;
 	}
 	.selectedFlag{
 		color: #FFFFFF;
