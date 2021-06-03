@@ -58,13 +58,13 @@
 				    })
 			},
 			goToMiddleGame(){
-				this.$store.dispatch('changeMiddle'),
+				this.$store.commit('changeMiddle'),
 				 wx.navigateTo({
 				      url: '../gamePage/gamePage',
 				    })
 			},
 			goToHardGame(){
-				this.$store.dispatch('changeHard'),
+				this.$store.commit('changeHard'),
 				 wx.navigateTo({
 				      url: '../gamePage/gamePage',
 				    })

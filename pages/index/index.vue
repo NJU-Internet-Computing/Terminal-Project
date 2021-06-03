@@ -47,7 +47,7 @@
 				    })
 			},
 			goToGamePage(){
-				this.$store.dispatch('changeMode'),
+				this.$store.commit('changeMode'),
 				 wx.navigateTo({
 				      url: '../gamePage/gamePage',
 				    })
