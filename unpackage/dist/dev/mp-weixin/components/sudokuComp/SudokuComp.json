@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-button": "/node-modules/uview-ui/components/u-button/u-button",
+    "u-icon": "/node-modules/uview-ui/components/u-icon/u-icon",
+    "board": "/components/sudokuComp/Board/Board",
+    "plain-num-selcotr": "/components/sudokuComp/PlainNumSelector/PlainNumSelector",
+    "steer-wheel": "/components/sudokuComp/SteerWheel/SteerWheel"
+  }
+}

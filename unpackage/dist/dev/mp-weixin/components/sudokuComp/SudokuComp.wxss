@@ -1,0 +1,27 @@
+
+#Board {
+	text-align: center;
+	margin: 0 auto;
+}
+.operations {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	        flex-direction: row;
+	-webkit-justify-content: space-around;
+	        justify-content: space-around;
+	margin: 20rpx auto;
+}
+.reverseIcon {
+	-webkit-transform: scaleX(-1);
+	        transform: scaleX(-1);
+}
+
+/* 
+#SteerWheel{
+	margin: 10rpx 10rpx auto;
+} */
+
