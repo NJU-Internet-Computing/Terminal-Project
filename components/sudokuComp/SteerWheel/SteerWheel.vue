@@ -1,7 +1,9 @@
 <template>
 	<view class="SteerWheel">
 		<u-grid  :col="3" v-for="(row, rowIndex) in icons" :key="rowIndex" class="u-grid-row" @click="clickItem">
-			<u-grid-item v-for="(icon, colIndex) in row" :index="icon" :key="colIndex">
+			<u-grid-item v-for="(icon, colIndex) in row" :index="icon" :key="colIndex"
+				bg-color="#efe9d3"
+			>
 				<u-icon :name="icon" size="100"></u-icon>
 			</u-grid-item>
 		</u-grid>
@@ -19,7 +21,10 @@
 					['','arrow-up',''],
 					['arrow-left','','arrow-right'],
 					['','arrow-down',''],
-				]
+				],
+				gridItemStyle: {
+					"background-color": '#efe9d3',
+				},
 			}
 		},//end of data
 		
@@ -51,6 +56,7 @@
 	.SteerWheel{
 		width: 600rpx;
 		margin: 10rpx auto ;
+		background-color: #efe9d3;
 	}
 	.u-grid-row{
 		width: 100%;

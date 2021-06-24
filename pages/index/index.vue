@@ -44,12 +44,14 @@
 		},
 		methods: {
 			goToStages() {
+				
+				this.$store.commit('chooseNormalMode'),
 				wx.navigateTo({
 					url: '../stages/stages',
 				})
 			},
 			goToGamePage() {
-				this.$store.commit('chooseMode'),
+				this.$store.commit('choosePuzzleMode'),
 					wx.navigateTo({
 						url: '../gamePage/gamePage',
 					})
