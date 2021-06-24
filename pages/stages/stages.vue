@@ -56,6 +56,7 @@
 		},
 		methods: {
 			goToEasyGame() {
+				this.$store.commit('chooseEasy') ;
 				wx.navigateTo({
 					url: '../gamePage/gamePage',
 				})

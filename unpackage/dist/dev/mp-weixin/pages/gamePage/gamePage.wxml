@@ -1,1 +1,1 @@
-<view class="page"><sudoku-comp vue-id="26d12bc0-1" gameMode="{{gameMode}}" sudokuState="{{state}}" data-event-opts="{{[['^gameOver',[['handleGameOver']]]]}}" bind:gameOver="__e" bind:__l="__l"></sudoku-comp></view>
+<view class="page"><block wx:if="{{prepared}}"><sudoku-comp vue-id="26d12bc0-1" gameMode="{{gameMode}}" sudokuState="{{state}}" data-event-opts="{{[['^gameOver',[['handleGameOver']]]]}}" bind:gameOver="__e" bind:__l="__l"></sudoku-comp></block></view>

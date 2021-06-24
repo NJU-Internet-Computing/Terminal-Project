@@ -143,6 +143,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+
+
+
 {
   data: function data() {
     return {
@@ -156,14 +159,41 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       [0, 2, 6, 5, 8, 0, 0, 0, 7],
       [8, 0, 0, 0, 2, 4, 0, 5, 6],
       [5, 0, 4, 6, 3, 7, 2, 8, 0]],
+      //桩，模拟用，最后要删除
+      gameMode: "NORMAL", //桩，模拟用，最后要删除
 
-      gameMode: "NORMAL" };
+      prepared: false, //初始化完成之前，不渲染SudokuComp组件
 
+      showDialog: false //控制对话框的渲染
+    };
   },
-  methods: {
-    handleGameOver: function handleGameOver() {
 
+  /**
+      * @description 在这里进行页面的初始化工作
+      */
+  beforeMount: function beforeMount() {
+    //1.使用vuex，从store里取出gameMode与difficulty参数。
+
+    //2.使用wx.request的api进行网络请求向后端请求sudokuState
+
+    //3.设置prepared字段，进行SudokuComp组件渲染
+    prepared = true;
+  },
+
+  methods: {
+
+    /**
+              * 处理gameOver事件
+              */
+    handleGameOver: function handleGameOver() {
+      //1.显示对话框，提示用户过关成功
+
+      //2.固定时间后，关闭对话框
+
+      //3.返回游戏主页
     } },
+
+
 
   components: {
     SudokuComp: SudokuComp } };exports.default = _default;
